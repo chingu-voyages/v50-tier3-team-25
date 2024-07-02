@@ -38,4 +38,4 @@ coding!
 - Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 
    ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- David Hyppolite: [GitHub](https://github.com/dhayv) / [LinkedIn](https://www.linkedin.com/in/david-h-60560b61/)
