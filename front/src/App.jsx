@@ -6,7 +6,7 @@ import Header from "./Header"
 const Title = () => {
   return (
     <h1>
-      Hello World!
+      Team 25 Restaurant
     </h1>
   )
 }
@@ -17,10 +17,7 @@ function App() {
       className="bg-primary h-100 p-5"
       style={{ color: 'white' }}
     > 
-      <NavBar/>
-      <Link className="text-light" to='/about'>About</Link>
       <Title />
-      <Footer/>
     </div>
   )
 }

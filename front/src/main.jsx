@@ -1,8 +1,10 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Outlet,
 } from 'react-router-dom'
 
 // project styles
@@ -14,26 +16,73 @@ import App from './App'
 import ErrorPage from './ErrorPage'
 import MenuPage from './MenuPage'
 
+import Header from './Header'
+import Footer from './Footer'
+
+import { AuthContext } from './authContext'
+
 const site = import.meta.env.BASE_URL
+
+function Layout() {
+  return (
+      <>
+        <div id='page-content'>
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
+      </>
+  )
+}
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <App />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: '/about',
-    element: <About />
-  },
-  {
-    path: '/menu',
-    element: <MenuPage />
-  },
-], {
-  basename: site
-})
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <App />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: '/about',
+        element: <About />
+      },
+      {
+        path: '/menu',
+        element: <MenuPage />
+      },
+    ],
+  }
+])
+
+const AuthContextProvider = ({children}) => {
+  const [accessToken, setAccessToken] = useState([])
+
+  useEffect(() => {
+    //check our local storage for these items on page load
+    const checkAccess = localStorage.getItem("access")
+
+    if (checkAccess) { //valid, not undefined
+      setAccessToken(checkAccess)
+    }
+  }, [])
+
+  const auth = {
+    accessToken: accessToken,
+    setAccessToken: setAccessToken,
+  }
+
+  return (
+    <AuthContext.Provider value={{ auth: auth }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <AuthContextProvider>
+    <RouterProvider router={router} />
+  </AuthContextProvider>
 )
