@@ -17,7 +17,6 @@ function App() {
       className="bg-primary h-100 p-5"
       style={{ color: 'white' }}
     > 
-      <Header/>
       <NavBar/>
       <Link className="text-light" to='/about'>About</Link>
       <Title />
