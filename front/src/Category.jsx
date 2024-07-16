@@ -1,15 +1,15 @@
 import React from "react";
 
-
-
-// Thos components displays all available category sections 
+// These components displays all available category sections 
 // Also Selections of a category
 // Render all categories and handle user clicks
-const Catergories = () => {
+const Category = ({categoryName, setCurrentCategory}) => {
 
     return(
-        <div>Category List</div>
+        <div onClick={() => { setCurrentCategory(categoryName) }}>
+            {categoryName}
+        </div>
     )
 }
 
-export default Catergories;
+export default Category;
