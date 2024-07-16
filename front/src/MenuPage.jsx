@@ -1,7 +1,7 @@
 import React from "react";
 
 
-// Main container of the Restauraunts Menu Page
+// Main container of the Restaurants Menu Page
 // Including category selection and displaying menu items
 const MenuPage = () => {
 
