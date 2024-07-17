@@ -1,25 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 
 const Login = () => {
+    const [userName, setUserName] = useState('');
+    const [passWord, setPassword] = useState('');
+    const [message, setMessage] = useState('')
   
         
-    const LoginUser = () => {
-         axios.post(`/login`)
-            .then(response => {
-                console.log("Login Successful:", response.data)
+    const LoginUser = async (e) => {
+        e.preventdefault();
+        try {
+            const params = new URLSearchParams()
+            params.append('username', userName)
+            params.append('password', passWord)
 
-            })
-            .catch(error => { 
-                console.log("Cant login:", error)
-                
-            })
-    }}
+            const response = await axios.post('/login',{params});
 
+            if(response.status === 200) {
+                setMessage("Login Successful")
+            }
+
+        } catch (error) {
+            if(response.status === 40 )
+            setMessage("Unauthorized");
+        };
+
+    };
     return(
-        <section>Login </section>
-    )
+        <div>
+            <h1>Login</h1>
+            <form onSubmit={LoginUser}>
 
+            </form>
+        </div>
+    )
+};
 
 export default Login;
