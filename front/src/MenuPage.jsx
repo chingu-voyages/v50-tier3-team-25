@@ -1,5 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row"
+
 import MenuItem from "./MenuItem";
 import Category from "./Category";
 import { getMenu } from "./api";
@@ -19,11 +22,23 @@ const MenuPage = () => {
     }, [])
 
     let menuElements = []
+    let goBack = (<></>)
 
     if (currentCategory) { //active category
         for (const menuItem of menuData[currentCategory]) {
-            menuElements.push(MenuItem({itemName: menuItem.name}))
+            menuElements.push(MenuItem({
+                itemName: menuItem.name,
+                description: menuItem.dsc,
+                image: menuItem.img,
+                price: menuItem.price,
+                rating: menuItem.rate,
+            }))
         }
+
+        goBack = (
+            <a href="#" onClick={ () => { setCurrentCategory("") } }> Back To Categories </a>
+        )
+
     } else { //no active category, display categories
         for (const category of Object.keys(menuData)) {
             menuElements.push(Category({categoryName: category, setCurrentCategory: setCurrentCategory}))
@@ -31,10 +46,15 @@ const MenuPage = () => {
     }
 
     return(
-        <div>
-            <h1>Our Menu</h1>
-            {menuElements}
-        </div>
+        <Container>
+            <Row>
+                <h1>Our Menu</h1>
+                {goBack}
+            </Row>
+            <Row>
+                {menuElements}
+            </Row>
+        </Container>
     )
 }
 
