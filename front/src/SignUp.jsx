@@ -1,67 +1,91 @@
 import axios from "axios";
-import React, {useState} from "react";
-
+import React, { useState } from "react";
+import { Form, Button } from 'react-bootstrap';
 
 const SignUp = () => {
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         userName: '',
         email: '',
         passWord: '',
-    })
-        };
+    });
 
-        const handleSubmit = async (e) => {
-            e.preventdefault();
-            const {email, userName, passWord} = formData
-                try {
-                    const response = await axios.post('/createUser',{
-                        username: userName,
-                        email: email,
-                        password: passWord
-                    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-                    if(response.status === 201) {
-                        setMessage("User Created Successfully.")
-                        setFormData({
-                            userName: '',
-                            email: '',
-                            passWord: ''
-                        })
-                    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, userName, passWord } = formData;
+        try {
+            const response = await axios.post('/createUser', {
+                username: userName,
+                email: email,
+                password: passWord
+            });
 
-                } catch (error) {
-                    console.error("Cant create account:", error);
-                };
+            if (response.status === 201) {
+                setMessage("User Created Successfully.");
+                setFormData({
+                    userName: '',
+                    email: '',
+                    passWord: ''
+                });
+            }
 
+        } catch (error) {
+            console.error("Can't create account:", error);
+            setMessage("Error creating account.");
+        }
+    };
 
-        
-    return(
+    return (
         <div>
-            <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-                </Form.Text>
-            </Form.Group>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Enter username" 
+                        name="userName"
+                        value={formData.userName}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" type="submit" oncli>
-                Submit
-            </Button>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control 
+                        type="email" 
+                        placeholder="Enter email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control 
+                        type="password" 
+                        placeholder="Password" 
+                        name="passWord"
+                        value={formData.passWord}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
             </Form>
-
+            {message && <p>{message}</p>}
         </div>
-    )
-
+    );
 }
 
 export default SignUp;
