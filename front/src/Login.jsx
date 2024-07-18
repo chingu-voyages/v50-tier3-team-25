@@ -8,6 +8,15 @@ const Login = () => {
     const [message, setMessage] = useState('')
   
         
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        if (name == userName) {
+            setUserName(value);
+        } else if (name == 'passWord') {
+            setPassword(value)
+        }    
+    }
+
     const LoginUser = async (e) => {
         e.preventdefault();
         try {
@@ -22,17 +31,41 @@ const Login = () => {
             }
 
         } catch (error) {
-            if(response.status === 40 )
+            if(error.response && error.response.status === 401 )
             setMessage("Unauthorized");
-        };
+        }; 
 
     };
     return(
         <div>
-            <h1>Login</h1>
-            <form onSubmit={LoginUser}>
+              <Form onSubmit={LoginUser}>
+                <Form.Group className="mb-3" controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Enter username" 
+                        name="userName"
+                        value={formData.userName}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
 
-            </form>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control 
+                        type="password" 
+                        placeholder="Password" 
+                        name="passWord"
+                        value={formData.passWord}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Login
+                </Button>
+            </Form>
+            {message && <p>{message}</p>}
         </div>
     )
 };
