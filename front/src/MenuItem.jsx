@@ -5,9 +5,11 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { v4 as uuidv4 } from "uuid";
 
+import { addToCart } from "./utility";
+
 // Display menu items of the selected category 
 // include functionality to add items to the cart
-const MenuItem = ({itemName, description, image, price, rating}) => {
+const MenuItem = ({itemName, id, description, image, price, rating}) => {
 
     // example menu data:
 
@@ -45,7 +47,9 @@ const MenuItem = ({itemName, description, image, price, rating}) => {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-end">
-                        <Button>Add To Cart</Button>
+                        <Button onClick={() => {
+                            addToCart(id, itemName, price)
+                        }} >Add To Cart</Button>
                     </Col>
                 </Row>
             </Container>
