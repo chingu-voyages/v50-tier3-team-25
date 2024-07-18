@@ -18,8 +18,10 @@ import MenuPage from './MenuPage'
 
 import Header from './Header'
 import Footer from './Footer'
+import Login from './Login'
 
 import { AuthContext } from './authContext'
+import SignUp from './SignUp'
 
 const site = import.meta.env.BASE_URL
 
@@ -53,6 +55,15 @@ const router = createBrowserRouter([
         path: '/menu',
         element: <MenuPage />
       },
+      {
+        path: '/signup',
+        element: <SignUp />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      
     ],
   }
 ])
