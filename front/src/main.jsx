@@ -22,6 +22,7 @@ import Login from './Login'
 
 import { AuthContext } from './authContext'
 import SignUp from './SignUp'
+import MapLocations from './MapLocations'
 
 const site = import.meta.env.BASE_URL
 
@@ -31,6 +32,7 @@ function Layout() {
         <div id='page-content'>
           <Header />
           <Outlet />
+          <MapLocations/>
           <Footer />
         </div>
       </>
