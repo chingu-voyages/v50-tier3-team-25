@@ -90,10 +90,10 @@ const MapLocations = () => {
                                 onCloseClick={() => setSelectedLocations(null)}
                             >
                                 <div>
-                                    <h6>{selectedLocation.itemName}</h6>
-                                    <p>{selectedLocation.rating} out 5 Stars</p>
+                                    <h6>Name: {selectedLocation.itemName}</h6>
+                                    <p>Rating: {selectedLocation.rating}/5</p>
                                         
-                                    <p>Speciality Dish: {selectedLocation.description}</p>
+                                    <p>Description: {selectedLocation.description}</p>
                                     <p>Price: ${selectedLocation.price}</p>
                                     <p>{selectedLocation.cityState}</p>
                                 </div>
