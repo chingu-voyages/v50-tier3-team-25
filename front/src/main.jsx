@@ -32,7 +32,6 @@ function Layout() {
         <div id='page-content'>
           <Header />
           <Outlet />
-          <MapLocations/>
           <Footer />
         </div>
       </>
@@ -65,6 +64,11 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
+      {
+        path: '/locations',
+        element: <MapLocations/>
+
+      }
       
     ],
   }
