@@ -10,24 +10,29 @@ const OrderSummary = () => {
     }, []);
 
     return(
-        <Container>
-            <Card>
-                <Card.Body>
-                    <h6>Order Summary</h6>
-                    {cart.map((item) => 
-                    <ul 
-                        key={item.id}
-                    >
-                        <li>{item.name} - x{item.quantity} - ${item.price * item.quantity}</li>
+        
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <Container>
+                    <Card>
+                        <Card.Body>
+                            <h6>Order Summary</h6>
+                            {cart.map((item) => 
+                            <ul 
+                                key={item.id}
+                            >
+                                <li>{item.name} - x{item.quantity} - ${item.price * item.quantity}</li>
 
-                    </ul>)
-                    }
-                    <Col>
-                        <Button> Checkout</Button>
-                    </Col>
-                </Card.Body>
-            </Card>
-        </Container>
+                            </ul>)
+                            }
+                            <Col>
+                                <Button> Checkout</Button>
+                            </Col>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            </div>
+        </div>
     )
 }
 
