@@ -33,3 +33,9 @@ body {
   position: relative;
   overflow-y: scroll;
 }
+
+#page-content{
+display: grid;
+grid-template-rows: auto 1fr auto;
+min-height: 100vh;
+}

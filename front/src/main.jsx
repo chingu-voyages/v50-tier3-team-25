@@ -22,6 +22,7 @@ import Login from './Login'
 
 import { AuthContext } from './authContext'
 import SignUp from './SignUp'
+import MapLocations from './MapLocations'
 
 const site = import.meta.env.BASE_URL
 
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
+      {
+        path: '/locations',
+        element: <MapLocations/>
+
+      }
       
     ],
   }
