@@ -11,3 +11,4 @@ export const getMenu = ({setMenu}) => {
         console.log('ERROR: ', error)
     })
 }
+

@@ -3,6 +3,12 @@ import NavBar from "./NavBar"
 import Footer from "./Footer"
 import Header from "./Header"
 
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import MenuItem from "./MenuItem";
+
 const Title = () => {
   return (
     <h1>
@@ -11,13 +17,88 @@ const Title = () => {
   )
 }
 
+function Hero() {
+  return (
+    <Container className="py-2">
+      <Row>
+        <Col className="border hero rounded-edge">
+          INSERT HERO IMAGE HERE
+        </Col>
+      </Row>
+    </Container>
+  )
+}
+
+function StoreFinder() {
+  return (
+    <Container className="py-2">
+      <Row>
+        <Col className="border rounded-edge">
+          <Link to={"/locations"}>FIND A LOCATION NEAR YOU</Link>
+        </Col>
+      </Row>
+    </Container>
+  )
+}
+
+function Featured() {
+  return (
+    <Container className="py-2">
+      <Row>
+          {MenuItem({ 
+            itemName: "Featured Example",
+            id: "example",
+            description: "An example featured menu item.",
+            image: "",
+            price: 99.99,
+            rating: 5,
+          })}
+          {MenuItem({ 
+            itemName: "Featured Example",
+            id: "example",
+            description: "An example featured menu item.",
+            image: "",
+            price: 99.99,
+            rating: 5,
+          })}
+      </Row>
+    </Container>
+  )
+}
+
+function PopularDishes() {
+  return (
+    <Container className="py-2">
+      <Row>
+          {MenuItem({ 
+            itemName: "Popular Example",
+            id: "example",
+            description: "An example popular menu item.",
+            image: "",
+            price: 99.99,
+            rating: 5,
+          })}
+          {MenuItem({ 
+            itemName: "Popular Example",
+            id: "example",
+            description: "An example popular menu item.",
+            image: "",
+            price: 99.99,
+            rating: 5,
+          })}
+      </Row>
+    </Container>
+  )
+}
+
 function App() {
   return (
-    <div 
-      className="bg-primary h-100 p-5"
-      style={{ color: 'white' }}
-    > 
+    <div className="h-100 p-5 text-center">
       <Title />
+      <Hero/>
+      <StoreFinder/>
+      <Featured/>
+      <PopularDishes/>
     </div>
   )
 }

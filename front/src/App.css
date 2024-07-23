@@ -34,6 +34,19 @@ body {
   overflow-y: scroll;
 }
 
+.hero {
+  height: 25vh;
+}
+
+.rounded-edge {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.vw-100 {
+  width: 100vw;
+}
+
 #page-content{
 display: grid;
 grid-template-rows: auto 1fr auto;
