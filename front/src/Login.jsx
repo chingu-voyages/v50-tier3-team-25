@@ -75,7 +75,7 @@ const Login = () => {
                     </Form>
                     {message && <p className="text-center mt-3">{message}</p>}
                     <p className="text-center mt-3">
-                        <Link to='/signup' className="btn btn-link">
+                        <Link to='/signup' className="btn btn-link" onClick={() => { useHref("/signup") }}>
                             Don't have an account? Sign Up
                         </Link>
                     </p>
