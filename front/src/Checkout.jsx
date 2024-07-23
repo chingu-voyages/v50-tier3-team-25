@@ -7,30 +7,40 @@ import { Link, useHref } from "react-router-dom";
 
 const Checkout = () => {
     const [cart, setCart] = useState([]);
-
+    
     useEffect(() => {
         setCart(getCart());
     }, []);
 
     // item names
 
-    // subtoal
+
+    const subtotal = Object.keys(cart).reduce((acc, id)  => {
+    let item = cart[id];
+    return acc + item.price * item.quantity;
+    }, 0);
+
     // taxes
+    const taxRate = 0.08
+    //
+    const taxes = subtotal * taxRate
     //total
+    const total =  subtotal + taxes
+    
 
     return(
                 <Container>
                     <Row className="">
-                        <Row className=" mb-5 mt-2">
+                        <Row className=" mb-3 mt-2">
                             <Col>
-                                <Link variant="primary" onClick={''}> Return To Cart</Link>
+                                <Link variant="primary" onClick={() => navigate(-1)} > Return To Cart</Link>
                             </Col>
                         </Row>
                         <Col>
                             <h6>Billing information</h6>
                             <Form onSubmit={""}>
-                                <Form.Group className="mb-3" controlId="formBasicUsername">
-                                    <Form.Label>Name</Form.Label>
+                                <Form.Group controlId="formBasicUsername">
+                                    <Form.Label></Form.Label>
                                     <Form.Control 
                                         type="text" 
                                         placeholder="Enter Name" 
@@ -40,44 +50,74 @@ const Checkout = () => {
                                     />
                                 </Form.Group>
 
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label>Add</Form.Label>
+                                <Form.Group controlId="formBasicEmail">
+                                    <Form.Label></Form.Label>
                                     <Form.Control 
-                                        type="email" 
-                                        placeholder="Enter email" 
-                                        name="email"
+                                        type="address" 
+                                        placeholder="Address" 
+                                        name="address"
                                         value={""}
                                         onChange={""}
                                     />
                                 </Form.Group>
 
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>Password</Form.Label>
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Label></Form.Label>
                                     <Form.Control 
-                                        type="password" 
-                                        placeholder="Password" 
-                                        name="passWord"
+                                        type="text" 
+                                        placeholder="City" 
+                                        name="city"
                                         value={""}
                                         onChange={""}
                                     />
                                 </Form.Group>
+
+                                <Form.Group controlId="formBasicPassword">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control 
+                                        type="text" 
+                                        placeholder="State" 
+                                        name="state"
+                                        value={""}
+                                        onChange={""}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control 
+                                        type="text" 
+                                        placeholder="ZipCode" 
+                                        name="state"
+                                        value={""}
+                                        onChange={""}
+                                    />
+                                </Form.Group>
+
+                            
                             </Form>
                         </Col>
                         
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <h6>Order Summary</h6>
+                                    <h6 className="mb-3">Order Summary</h6>
                                     {Object.keys(cart).map((id) => {
                                     let item = cart[id]
 
-                                    return (<ul 
+                                    return (<div 
                                         key={uuidv4()}
-                                    >
-                                        <li>{item.name} - x{item.quantity} - ${item.price * item.quantity}</li>
-
-                                    </ul>)})}
-                                    
+                                        style={{liststyle: 'none'}}
+                                        className="list-unstyled"
+                                    >   
+                                        <li className="list-unstyled pr-5"></li>
+                                        <span>{item.name}</span>
+                                        <span> - x{item.quantity} - </span>
+                                        <span> ${item.price * item.quantity}</span>
+                                    </div>)})}
+                                        <hr></hr>
+                                        <p>Subtotal: ${subtotal.toFixed(2)} </p>
+                                        <p>Taxes:  ${taxes.toFixed(2)} </p>
+                                        <p >Total: ${total.toFixed(2)} </p>
                                 </Card.Body>
                             </Card>
                             
