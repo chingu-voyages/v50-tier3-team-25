@@ -28,7 +28,7 @@ const OrderSummary = () => {
 
                             </ul>)})}
                             <Col>
-                                <Button> Checkout</Button>
+                                <Button href="/checkout" onClick={() => { useHref("/checkout") }}> Checkout</Button>
                             </Col>
                         </Card.Body>
                     </Card>
