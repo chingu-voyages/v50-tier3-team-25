@@ -20,10 +20,10 @@ const MenuPage = () => {
         //fetch data of selected categories
             // Render those categories menu items
 
-    let cart = Cart({setViewCart})
+    let cartElement = Cart({viewCart, setViewCart})
 
     if (!viewCart) {
-        cart = (<></>)
+        cartElement = (<></>)
     }
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const MenuPage = () => {
 
     return(
         <>
-            {cart}
+            {cartElement}
             <Container>
                 <Row>
                     <Col>

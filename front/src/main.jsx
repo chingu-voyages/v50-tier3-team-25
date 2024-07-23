@@ -23,6 +23,7 @@ import Login from './Login'
 import { AuthContext } from './authContext'
 import SignUp from './SignUp'
 import MapLocations from './MapLocations'
+import OrderSummary from './OrderSummary'
 
 const site = import.meta.env.BASE_URL
 
@@ -68,7 +69,11 @@ const router = createBrowserRouter([
         path: '/locations',
         element: <MapLocations/>
 
-      }
+      },
+      {
+        path: '/order',
+        element: <OrderSummary/>,
+      },
       
     ],
   }
