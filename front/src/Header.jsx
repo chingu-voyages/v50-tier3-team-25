@@ -14,9 +14,7 @@ function Buttons() {
 
 const Header = () => {
     return (
-        <Container>
-                <NavBar/>
-        </Container>
+        <NavBar/>
     );
 }
 

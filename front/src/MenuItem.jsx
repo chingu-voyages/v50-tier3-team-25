@@ -26,7 +26,7 @@ const MenuItem = ({itemName, id, description, image, price, rating}) => {
 
     return(
         <Col className="col-12 col-md-6 p-1" key={uuidv4()}>
-            <Container className="p-2 border">
+            <Container className="p-2 border rounded-edge">
                 <Row>
                     <Col>
                         Name: {itemName}
