@@ -22,7 +22,7 @@ app.get("/data", (req, res) => {
 });
 
 app.post("/createUser", async (req, res) => {
-  const { username, email, password, mongodbPassword } = req.body;
+  const { username, name, email, password, mongodbPassword } = req.body;
 
   let connectionString = `mongodb+srv://ecohen1125:${mongodbPassword}@userdatabase.7uirz2l.mongodb.net/`;
 
@@ -35,6 +35,7 @@ app.post("/createUser", async (req, res) => {
 
       const user = await User.create({
         username: username,
+        name: name,
         email: email,
         password: hashedPassword,
       });
@@ -82,7 +83,7 @@ app.get("/login", async (req, res) => {
   }
 });
 
-app.get("/getCredits", async (req, res) => {
+app.get("/getUser", async (req, res) => {
   const { username, mongodbPassword } = req.body;
 
   let connectionString = `mongodb+srv://ecohen1125:${mongodbPassword}@userdatabase.7uirz2l.mongodb.net/`;
@@ -95,7 +96,14 @@ app.get("/getCredits", async (req, res) => {
       return res.status(401).json({ error: "User Does Not Exist" });
     }
 
-    res.status(200).json({ message: user.credits });
+    res.status(200).json({
+      message: {
+        username: user.username,
+        name: user.name,
+        email: user.email,
+        credits: user.credits,
+      },
+    });
   } catch (err) {
     res.status(401).json({ error: "Unauthorized" });
   }
@@ -114,8 +122,11 @@ app.put("/addCredits", async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "User Does Not Exist" });
     }
-    
-    const updateUser = await User.updateOne({ username: username }, { username: username, credits: user.credits + credits });
+
+    const updateUser = await User.updateOne(
+      { username: username },
+      { username: username, credits: user.credits + credits }
+    );
 
     if (!updateUser) {
       return res.status(401).json({ error: "Error Adding Credits" });
@@ -140,11 +151,14 @@ app.put("/useCredits", async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "User Does Not Exist" });
     }
-    
+
     if (user.credits < credits) {
       return res.status(401).json({ error: "Insufficient Credits" });
     } else {
-      const updateUser = await User.updateOne({ username: username }, { username: username, credits: user.credits - credits });
+      const updateUser = await User.updateOne(
+        { username: username },
+        { username: username, credits: user.credits - credits }
+      );
 
       if (!updateUser) {
         return res.status(401).json({ error: "Error Using Credits" });
@@ -152,8 +166,6 @@ app.put("/useCredits", async (req, res) => {
 
       res.status(201).json({ message: "Credits Successfully Removed" });
     }
-
-
   } catch (err) {
     res.status(401).json({ error: "Unauthorized" });
   }
