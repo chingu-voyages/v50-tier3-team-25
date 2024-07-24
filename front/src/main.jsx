@@ -24,6 +24,7 @@ import { AuthContext } from './authContext'
 import SignUp from './SignUp'
 import MapLocations from './MapLocations'
 import OrderSummary from './OrderSummary'
+import Checkout from './Checkout'
 
 const site = import.meta.env.BASE_URL
 
@@ -74,7 +75,10 @@ const router = createBrowserRouter([
         path: '/order',
         element: <OrderSummary/>,
       },
-      
+      {
+        path: '/checkout',
+        element: <Checkout />,
+      },
     ],
   }
 ])

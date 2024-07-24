@@ -45,8 +45,8 @@ const SignUp = () => {
     };
 
     return (
-            <Container>
-                <Card>
+            <Container className="d-flex justify-content-center align-items-center vh-100">
+                <Card className="w-100" style={{ maxWidth: '400px'}}>
                     <Card.Body>
                     <h2 className="text-center mb-4">SignUp</h2>
                     <Form onSubmit={handleSubmit}>
@@ -90,7 +90,7 @@ const SignUp = () => {
                     {message && <p>{message}</p>}
 
                     <p className="text-center mt-3">
-                        <Link to="/login" className="btn btn-link">
+                        <Link to="/login" className="btn btn-link" onClick={() => { useHref("/login") }}>
                             Already have an account? Login
                         </Link>
                     </p>
