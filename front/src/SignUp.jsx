@@ -7,6 +7,7 @@ const SignUp = () => {
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         userName: '',
+        firstName: '',
         email: '',
         passWord: '',
     });
@@ -25,6 +26,7 @@ const SignUp = () => {
         try {
             const response = await axios.post('/createUser', {
                 username: userName,
+                name: firstName,
                 email: email,
                 password: passWord
             });
@@ -50,6 +52,7 @@ const SignUp = () => {
                     <Card.Body>
                     <h2 className="text-center mb-4">SignUp</h2>
                     <Form onSubmit={handleSubmit}>
+                        
                         <Form.Group className="mb-3" controlId="formBasicUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control 
@@ -57,6 +60,17 @@ const SignUp = () => {
                                 placeholder="Enter username" 
                                 name="userName"
                                 value={formData.userName}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>name</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Enter Name" 
+                                name="Name"
+                                value={formData.firstName}
                                 onChange={handleChange}
                             />
                         </Form.Group>
