@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import { APIProvider, Map, AdvancedMarker, Marker, InfoWindow } from '@vis.gl/react-google-maps';
 import axios from "axios";
 import { Rating } from 'react-simple-star-rating'
@@ -96,6 +96,7 @@ const MapLocations = () => {
                                     <p>Description: {selectedLocation.description}</p>
                                     <p>Price: ${selectedLocation.price}</p>
                                     <p>{selectedLocation.cityState}</p>
+                                    <Button>Go to Menu</Button>
                                 </div>
                             </InfoWindow>
                         )}

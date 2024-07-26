@@ -65,7 +65,7 @@ const SignUp = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicName">
-                            <Form.Label>name</Form.Label>
+                            <Form.Label>Name</Form.Label>
                             <Form.Control 
                                 type="text" 
                                 placeholder="Enter Name" 
