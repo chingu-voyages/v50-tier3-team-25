@@ -67,7 +67,7 @@ const Cart = ( {viewCart, setViewCart} ) => {
                             <Button onClick={() => { setViewCart(false) }}>OK</Button>
                         </Col>
                         <Col>
-                            <Button href="/order" onClick={() => { useHref("/order") }}>Check Out</Button>
+                            <Button href="/checkout" onClick={() => { useHref("/checkout") }}>Check Out</Button>
                         </Col>
                     </Row>
                 </Container>
