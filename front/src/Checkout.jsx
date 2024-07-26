@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Card, Button, Form } from "react-bootstrap";
 import { getCart } from "./utility";
 import { v4 as uuidv4 } from "uuid";
-import { Link, useHref } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const Checkout = () => {
@@ -33,7 +33,7 @@ const Checkout = () => {
                     <Row className="">
                         <Row className=" mb-3 mt-2">
                             <Col>
-                                <Link variant="primary" onClick={() => navigate(-1)} > Return To Cart</Link>
+                                <Link variant="primary" to={"/menu"} > Return To Menu</Link>
                             </Col>
                         </Row>
                         <Col>
