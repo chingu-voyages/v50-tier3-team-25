@@ -33,7 +33,7 @@ const Checkout = () => {
                     <Row className="">
                         <Row className=" mb-3 mt-2">
                             <Col>
-                                <Link variant="primary" onClick={() => navigate(-1)} > Return To Cart</Link>
+                                <Link variant="primary" to={"/menu"} > Return To Menu</Link>
                             </Col>
                         </Row>
                         <Col>
