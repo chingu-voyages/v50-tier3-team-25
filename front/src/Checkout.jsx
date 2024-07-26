@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Card, Button, Form } from "react-bootstrap";
 import { getCart } from "./utility";
 import { v4 as uuidv4 } from "uuid";
-import { Link, useHref } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const Checkout = () => {
