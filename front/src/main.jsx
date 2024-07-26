@@ -85,12 +85,14 @@ const router = createBrowserRouter([
 
 const AuthContextProvider = ({children}) => {
   const [accessToken, setAccessToken] = useState([])
+  const [username, setUsername] = useState("")
 
   useEffect(() => {
     //check our local storage for these items on page load
     const checkAccess = localStorage.getItem("access")
+    const checkUsername = localStorage.getItem("username")
 
-    if (checkAccess) { //valid, not undefined
+    if (checkAccess && checkUsername) { //valid, not undefined or empty
       setAccessToken(checkAccess)
     }
   }, [])
@@ -98,6 +100,8 @@ const AuthContextProvider = ({children}) => {
   const auth = {
     accessToken: accessToken,
     setAccessToken: setAccessToken,
+    username: username,
+    setUsername: setUsername,
   }
 
   return (
