@@ -5,14 +5,12 @@ import Login from "./Login";
 
 import { useContext } from "react";
 import { AuthContext } from "./authContext";
-import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const [view, setView] = useState(false)
     const [loginView, setLoginView] = useState(false)
 
     const { auth } = useContext(AuthContext)
-    const navigate = useNavigate
 
     let profile = (<></>)
     if (view) {
