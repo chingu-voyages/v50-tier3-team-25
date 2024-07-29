@@ -20,7 +20,7 @@ import Header from './Header'
 import Footer from './Footer'
 import Login from './Login'
 
-import { AuthContext } from './authContext'
+import AuthContextProvider from '../src/authContext'
 import SignUp from './SignUp'
 import MapLocations from './MapLocations'
 import OrderSummary from './OrderSummary'
@@ -83,37 +83,9 @@ const router = createBrowserRouter([
   }
 ])
 
-const AuthContextProvider = ({children}) => {
-  const [accessToken, setAccessToken] = useState([])
-  const [username, setUsername] = useState("")
-  const [selectedLocation,setSelectedLocations] = useState(null);
-  
-  useEffect(() => {
-    //check our local storage for these items on page load
-    const checkAccess = localStorage.getItem("access")
-    const checkUsername = localStorage.getItem("username")
-    const [selectedLocation,setSelectedLocations] = useState(null);
-    if (checkAccess && checkUsername) { //valid, not undefined or empty
-      setAccessToken(checkAccess)
-    }
-  }, [])
-
-  const auth = {
-    accessToken: accessToken,
-    setAccessToken: setAccessToken,
-    username: username,
-    setUsername: setUsername,
-  }
-
-  return (
-    <AuthContext.Provider value={{ auth: auth }}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
     <RouterProvider router={router} />
   </AuthContextProvider>
-)
+);

@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 import { APIProvider, Map, AdvancedMarker, Marker, InfoWindow } from '@vis.gl/react-google-maps';
 import axios from "axios";
 import { Rating } from 'react-simple-star-rating'
+import {AuthContext} from "./authContext"
+import { useNavigate } from "react-router-dom";
 
 
 // add clsutering
 // when user clicks on location should be able to look at full menu.
 
 const MapLocations = () => {
+    const {auth} = useContext(AuthContext)
+    const {selectedLocation, setSelectedLocation} = auth;
     const [locations, setLocations] = useState([]);
     const [categories, setCategories] = useState({});
-    const [selectedLocation, setSelectedLocations] = useState(null);
     const googleKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const mapId = import.meta.env.VITE_MAP_ID;
     const center = { lat: 39.8283, lng: -98.5795 };
     const [rating, setRatingValue] = useState(0); // react star rating
+    const navigate = useNavigate();
 
     const getCategories = async () => {
         try {
@@ -70,6 +74,12 @@ const MapLocations = () => {
 
     }, [categories]);
     console.log(selectedLocation)
+
+    const handleNavigation = (location) => {
+        setSelectedLocation(location);
+        navigate('/menu');
+    };
+
     return (
         <Container className="d-flex align-items-center justify-content-center flex-column">
             <div style={{ height: '75vh', width: '75%', margin: '0 auto' }} className="mb-5">
@@ -80,23 +90,23 @@ const MapLocations = () => {
                             <Marker
                                 key={location.id}
                                 position={{ lat: location.lat, lng: location.lng }}
-                                onClick={() =>setSelectedLocations(location)}
+                                onClick={() =>setSelectedLocation(location)}
                                 
                             />                            
                         ))}
                         {selectedLocation && (
                             <InfoWindow
                                 position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
-                                onCloseClick={() => setSelectedLocations(null)}
+                                onCloseClick={() => setSelectedLocation(null)}
                             >
                                 <div>
-                                    <h6>Name: {selectedLocation.itemName}</h6>
+                                    <h6>Name: {auth.selectedLocation.itemName}</h6>
                                     <p>Rating: {selectedLocation.rating}/5</p>
                                         
                                     <p>Description: {selectedLocation.description}</p>
                                     <p>Price: ${selectedLocation.price}</p>
                                     <p>{selectedLocation.cityState}</p>
-                                    <Button>Go to Menu</Button>
+                                    <Button onClick={() => handleNavigation(selectedLocation)}>Go to Menu</Button>
                                 </div>
                             </InfoWindow>
                         )}

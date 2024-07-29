@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import Login from "./Login";
 
 import { useContext } from "react";
-import { AuthContext } from "./authContext";
+import { AuthContext } from "../src/authContext";
 
 const NavBar = () => {
     const [view, setView] = useState(false)
