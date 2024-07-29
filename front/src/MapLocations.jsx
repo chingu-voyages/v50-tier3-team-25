@@ -84,7 +84,7 @@ const MapLocations = () => {
         <Container className="d-flex align-items-center justify-content-center flex-column">
             <div style={{ height: '75vh', width: '75%', margin: '0 auto' }} className="mb-5">
                 <APIProvider apiKey={googleKey} mapId={mapId}>
-                    <h3 className="d-flex align-items-center justify-content-center flex-column">Locations Across the USA</h3>
+                    <h3 className="display-6 d-flex align-items-center justify-content-center flex-column">Locations Across the USA</h3>
                     <Map defaultCenter={center} defaultZoom={4.5} >
                         {locations.map(location => (
                             <Marker

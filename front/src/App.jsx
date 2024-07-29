@@ -11,7 +11,7 @@ import MenuItem from "./MenuItem";
 
 const Title = () => {
   return (
-    <h1>
+    <h1 className="text-center">
       Team 25 Restaurant
     </h1>
   )
@@ -21,7 +21,7 @@ function Hero() {
   return (
     <Container className="py-2">
       <Row>
-        <Col className="border hero rounded-edge">
+        <Col className="border hero rounded bg-light text-center p-5">
           INSERT HERO IMAGE HERE
         </Col>
       </Row>
@@ -33,7 +33,7 @@ function StoreFinder() {
   return (
     <Container className="py-2">
       <Row>
-        <Col className="border rounded-edge">
+        <Col className="border rounded bg-light text-center p-5">
           <Link to={"/locations"}>FIND A LOCATION NEAR YOU</Link>
         </Col>
       </Row>

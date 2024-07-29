@@ -5,7 +5,7 @@ import { Card, Row, Col } from "react-bootstrap";
 const Footer = () => {
     return (
         <Card className="text-center">
-            <Card.Footer className="text-center py-5">
+            <Card.Footer className="text-center py-3">
                 <Row>
                     <Col className="">
                         <a href="https://github.com/chingu-voyages/v50-tier3-team-25" target="_blank" rel="noopener noreferrer">
