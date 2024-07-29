@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -8,6 +8,7 @@ import MenuItem from "./MenuItem";
 import Category from "./Category";
 import Cart from "./Cart";
 import { getMenu } from "./api";
+import { AuthContext } from "./authContext";
 
 // Main container of the Restaurants Menu Page
 // Including category selection and displaying menu items
@@ -15,6 +16,8 @@ const MenuPage = () => {
     const [menuData, setMenuData] = useState({})
     const [currentCategory, setCurrentCategory] = useState("")
     const [viewCart, setViewCart] = useState(false)
+    const {auth} = useContext(AuthContext)
+    const {selectedLocation} = auth;
 
     // display all the categories list
         //fetch data of selected categories
@@ -48,6 +51,15 @@ const MenuPage = () => {
         goBack = (
             <a href="#" onClick={ () => { setCurrentCategory("") } }> Back To Categories </a>
         )
+    } else if (selectedLocation) { // specific location selected
+        menuElements.push(MenuItem({
+            itemName: selectedLocation.itemName,
+            id: selectedLocation.id,
+            description: selectedLocation.description,
+            image: selectedLocation.image,
+            price: selectedLocation.price,
+            rating: selectedLocation.rating,
+        }));
 
     } else { //no active category, display categories
         for (const category of Object.keys(menuData)) {
