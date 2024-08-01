@@ -59,7 +59,7 @@ app.post("/createUser", async (req, res) => {
   }
 });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password, mongodbPassword } = req.body;
 
   let connectionString = `mongodb+srv://ecohen1125:${mongodbPassword}@userdatabase.7uirz2l.mongodb.net/`;
