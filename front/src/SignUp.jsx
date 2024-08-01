@@ -27,13 +27,19 @@ const SignUp = () => {
         e.preventDefault();
         const { email, name, userName, passWord } = formData;
         try {
-            const response = await axios.post(`${baseUrl}/createUser`, {
-                username: userName,
-                name: name,
-                email: email,
-                password: passWord,
-                mongodbPassword: secretKey,
-            });
+            const response = await axios(
+                {
+                    method: 'post',
+                    url: `${baseUrl}/createUser`,
+                    data: {
+                        username: userName,
+                        name: name,
+                        email: email,
+                        password: passWord,
+                        mongodbPassword: secretKey,
+                    },
+                }
+            )
 
             if (response.status === 201) {
                 setMessage("User Created Successfully.");

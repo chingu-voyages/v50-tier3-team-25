@@ -7,11 +7,10 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 import { getCredits } from "./api";
-import { AuthContext } from "../src/authContext";
 
 const Profile = ({auth, setView}) => {
     const [credits, setCredits] = useState(0)
-    
+
     function updateCredits() {
         getCredits({ auth, setInformation: setCredits})
     }
