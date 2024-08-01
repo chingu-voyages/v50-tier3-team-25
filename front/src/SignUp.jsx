@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import { Form, Button, Card, Container} from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
+import { baseUrl } from "./api";
+import { secretKey } from "./api";
+
 const SignUp = () => {
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         userName: '',
-        firstName: '',
+        name: '',
         email: '',
         passWord: '',
     });
@@ -22,19 +25,21 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, userName, passWord } = formData;
+        const { email, name, userName, passWord } = formData;
         try {
-            const response = await axios.post('/createUser', {
+            const response = await axios.post(`${baseUrl}/createUser`, {
                 username: userName,
-                name: firstName,
+                name: name,
                 email: email,
-                password: passWord
+                password: passWord,
+                mongodbPassword: secretKey,
             });
 
             if (response.status === 201) {
                 setMessage("User Created Successfully.");
                 setFormData({
                     userName: '',
+                    name: '',
                     email: '',
                     passWord: ''
                 });
@@ -69,8 +74,8 @@ const SignUp = () => {
                             <Form.Control 
                                 type="text" 
                                 placeholder="Enter Name" 
-                                name="Name"
-                                value={formData.firstName}
+                                name="name"
+                                value={formData.name}
                                 onChange={handleChange}
                             />
                         </Form.Group>
