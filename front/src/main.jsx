@@ -18,7 +18,6 @@ import MenuPage from './MenuPage'
 
 import Header from './Header'
 import Footer from './Footer'
-import Login from './Login'
 
 import AuthContextProvider from '../src/authContext'
 import SignUp from './SignUp'
@@ -61,10 +60,6 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <SignUp />
-      },
-      {
-        path: '/login',
-        element: <Login />
       },
       {
         path: '/locations',

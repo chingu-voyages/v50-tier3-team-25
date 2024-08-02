@@ -1,23 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-import { getCredits } from "./api";
-
-const Profile = ({auth, setView}) => {
-    const [credits, setCredits] = useState(0)
-
-    function updateCredits() {
-        getCredits({ auth, setInformation: setCredits})
-    }
-
-    useEffect(() => {
-        updateCredits()
-    }, [])
+const Profile = ({auth, credits, setView, updateCredits}) => {
 
     return(
         <div className="modal-overlay">

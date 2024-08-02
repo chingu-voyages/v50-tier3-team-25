@@ -114,14 +114,14 @@ const SignUp = () => {
           </Form>
           {message && <p>{message}</p>}
 
-          <p className="text-center mt-3">
+          {/* <p className="text-center mt-3">
             <Link
               to="/login"
               className="btn btn-link"
               onClick={() => {}}>
               Already have an account? Login
             </Link>
-          </p>
+          </p> */}
         </Card.Body>
       </Card>
     </Container>
