@@ -83,7 +83,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/getUser", async (req, res) => {
+app.post("/getUser", async (req, res) => {
   const { username, mongodbPassword } = req.body;
 
   let connectionString = `mongodb+srv://ecohen1125:${mongodbPassword}@userdatabase.7uirz2l.mongodb.net/`;

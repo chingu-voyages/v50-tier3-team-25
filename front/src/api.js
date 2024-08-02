@@ -1,7 +1,12 @@
 import axios from "axios";
 
 export const baseUrl = import.meta.env.VITE_BASEURL;
-export const secretKey = import.meta.env.SECRET_KEY;
+export const secretKey = import.meta.env.VITE_SECRET_KEY;
+
+export const saveUsername = ({ auth, username }) => {
+    auth.setUsername(username)
+    localStorage.setItem("username", username)
+}
 
 export const getMenu = ({ setMenu }) => {
   axios({
@@ -17,21 +22,26 @@ export const getMenu = ({ setMenu }) => {
     });
 };
 
-export const getCredits = ({ auth, setInformation }) => {
-  axios({
-    method: "get",
-    url: `${baseUrl}/getCredits`,
-    body: {
-      username: auth.username,
-      mongodbPassword: secretKey,
-    },
-  })
-    .then((response) => {
-      console.log("RESPONSE: ", response);
-    })
-    .catch((error) => {
-      console.log("ERROR: ", error);
-    });
+export const getUser = async ({ auth, setInformation }) => {
+
+    try {
+        const response = await fetch(`${baseUrl}/getUser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: auth.username,
+            mongodbPassword: secretKey,
+          }),
+        });
+  
+        if (response.ok) {
+            console.log(response)
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
 };
 
 export const addCredits = ({ auth, creditsToAdd, setInformation }) => {

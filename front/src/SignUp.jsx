@@ -28,6 +28,7 @@ const SignUp = () => {
     const { email, username, password, fullName } = formData;
 
     try {
+        console.log(dbPassword)
       const response = await fetch(`${baseURL}/createUser`, {
         method: "POST",
         headers: {
@@ -113,16 +114,14 @@ const SignUp = () => {
           </Form>
           {message && <p>{message}</p>}
 
-          <p className="text-center mt-3">
+          {/* <p className="text-center mt-3">
             <Link
               to="/login"
               className="btn btn-link"
-              onClick={() => {
-                useHref("/login");
-              }}>
+              onClick={() => {}}>
               Already have an account? Login
             </Link>
-          </p>
+          </p> */}
         </Card.Body>
       </Card>
     </Container>
