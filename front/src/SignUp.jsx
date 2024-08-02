@@ -28,6 +28,7 @@ const SignUp = () => {
     const { email, username, password, fullName } = formData;
 
     try {
+        console.log(dbPassword)
       const response = await fetch(`${baseURL}/createUser`, {
         method: "POST",
         headers: {
@@ -117,9 +118,7 @@ const SignUp = () => {
             <Link
               to="/login"
               className="btn btn-link"
-              onClick={() => {
-                useHref("/login");
-              }}>
+              onClick={() => {}}>
               Already have an account? Login
             </Link>
           </p>

@@ -21,10 +21,13 @@ export const getCredits = ({ auth, setInformation }) => {
   axios({
     method: "get",
     url: `${baseUrl}/getCredits`,
-    body: {
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
       username: auth.username,
       mongodbPassword: secretKey,
-    },
+    }),
   })
     .then((response) => {
       console.log("RESPONSE: ", response);
