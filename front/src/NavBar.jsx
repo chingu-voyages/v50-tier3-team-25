@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
 import Profile from "./Profile";
 import Login from "./Login";
@@ -6,15 +6,38 @@ import Login from "./Login";
 import { useContext } from "react";
 import { AuthContext } from "../src/authContext";
 
+import { getUser } from "./api";
+
 const NavBar = () => {
     const [view, setView] = useState(false)
     const [loginView, setLoginView] = useState(false)
+
+    //login form stuff because React is Fucking Stupid
+    const [userName, setUserName] = useState("");
+    const [passWord, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+
+    const form = {
+        userName, setUserName,
+        passWord, setPassword,
+        message, setMessage,
+    }
+
+    const [credits, setCredits] = useState(0)
+
+    function updateCredits() {
+        getUser({ auth, setInformation: setCredits})
+    }
+
+    useEffect(() => {
+        updateCredits()
+    }, [view])
 
     const { auth } = useContext(AuthContext)
 
     let profile = (<></>)
     if (view) {
-        profile = Profile({auth, setView})
+        profile = Profile({auth, credits, setView, updateCredits})
     }
 
     let login = (<></>)
@@ -22,7 +45,7 @@ const NavBar = () => {
         login = (
             <div className="modal-overlay">
                 <div className="modal-content">
-                    <Login/>
+                    {Login({ auth, form, setView, setLoginView })}
                     <Button onClick={() => {setLoginView(false)}}>OK</Button>
                 </div>
             </div>
