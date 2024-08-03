@@ -44,7 +44,28 @@ const NavBar = () => {
         updateCredits()
     }, [view])
 
+    //login form stuff because React is Fucking Stupid
+    const [userName, setUserName] = useState("");
+    const [passWord, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
+    const form = {
+        userName, setUserName,
+        passWord, setPassword,
+        message, setMessage,
+    }
+
+    const [credits, setCredits] = useState(0)
+
+    function updateCredits() {
+        getUser({ auth, setInformation: setCredits})
+    }
+
+    useEffect(() => {
+        updateCredits()
+    }, [view])
+
+    const { auth } = useContext(AuthContext)
 
     let profile = (<></>)
     if (view) {
