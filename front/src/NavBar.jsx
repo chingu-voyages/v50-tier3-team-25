@@ -32,57 +32,12 @@ const NavBar = () => {
     function updateCredits() {
         getUser({ auth, setInformation: setCredits})
     }
-
-    useEffect(() => {
-        if (auth.username) {
-          getUser({ auth, setInformation: setCredits });
-        }
-      }, [view, auth.username]);
     
 
     useEffect(() => {
         updateCredits()
     }, [view])
 
-    //login form stuff because React is Fucking Stupid
-    const [userName, setUserName] = useState("");
-    const [passWord, setPassword] = useState("");
-    const [message, setMessage] = useState("");
-
-    const form = {
-        userName, setUserName,
-        passWord, setPassword,
-        message, setMessage,
-    }
-
-    const [credits, setCredits] = useState(0)
-
-    function updateCredits() {
-        getUser({ auth, setInformation: setCredits})
-    }
-
-    useEffect(() => {
-        updateCredits()
-    }, [view])
-
-    const { auth } = useContext(AuthContext)
-
-    let profile = (<></>)
-    if (view) {
-        profile = Profile({auth, credits, setView, updateCredits})
-    }
-
-    let login = (<></>)
-    if (loginView) {
-        login = (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    {Login({ auth, form, setView, setLoginView })}
-                    <Button onClick={() => {setLoginView(false)}}>OK</Button>
-                </div>
-            </div>
-        )
-    }
 
     // logout function
     const handleLogout = () => {
@@ -90,12 +45,24 @@ const NavBar = () => {
         localStorage.removeItem('username');
         setView(false)
         setLoginView(false)
+
+        setUserName("");
+        setPassword("");
+        setMessage("");
       };
 
     return (
+        // moved so the login and profile are rendered as JSX
         <>
-            {profile}
-            {login}
+            {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} se/>}
+            {loginView && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <Login auth={auth} form={form} setView={setView} setLoginView={setLoginView} />
+                        <Button onClick={() => { setLoginView(false) }}>OK</Button>
+                    </div>
+                </div>
+            )}
             <Navbar bg="light" expand="lg" className="navbar">
                 <Container>
                     <Navbar.Brand href="/">Nom Nom Nexus</Navbar.Brand>
@@ -107,19 +74,18 @@ const NavBar = () => {
                             <Nav.Link href="/locations">Locations</Nav.Link>
                             <Nav.Link href="/about">About</Nav.Link>
                             <Nav.Link href="#" onClick={() => {
-                                    if (auth.username) {
-                                        setView(true)
-                                    } else {
-                                        setLoginView(true)
-                                    }
-                                }}>Profile</Nav.Link>
+                                if (auth.username) {
+                                    setView(true);
+                                } else {
+                                    setLoginView(true);
+                                }
+                            }}>Profile</Nav.Link>
                         </Nav>
-                            <Nav.Link>    
-                                <Button className="button is-light" onClick={handleLogout}>
+                        <Nav.Link>
+                            <Button className="button is-light" onClick={handleLogout}>
                                 Logout
-                                </Button>
+                            </Button>
                         </Nav.Link>
-                        
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

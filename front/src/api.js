@@ -47,38 +47,32 @@ export const getUser = async ({ auth, setInformation }) => {
   }
 };
 
-export const addCredits = ({ auth, creditsToAdd, setInformation }) => {
-  axios({
-    method: "put",
-    url: `${baseUrl}/addCredits`,
-    body: {
+export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
+  try {
+    const response = await axios.put(`${baseUrl}/addCredits`, {
       username: auth.username,
       credits: creditsToAdd,
       mongodbPassword: secretKey,
-    },
-  })
-    .then((response) => {
-      console.log("RESPONSE: ", response);
     })
-    .catch((error) => {
-      console.log("ERROR: ", error);
-    });
-};
+    console.log("RESPONSE: ", response);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    throw error
+  }
+}
 
-export const useCredits = ({ auth, creditsUsed, setInformation }) => {
-  axios({
-    method: "put",
-    url: `${baseUrl}/useCredits`,
-    body: {
-      username: auth.username,
-      credits: creditsUsed,
-      mongodbPassword: secretKey,
-    },
-  })
-    .then((response) => {
+export const useCredits = async ({ auth, creditsUsed, setInformation }) => {
+  try {
+    const response = await axios.put(`${baseUrl}/useCredits`, {
+        username: auth.username,
+        credits: creditsUsed,
+        mongodbPassword: secretKey,
+      });
       console.log("RESPONSE: ", response);
-    })
-    .catch((error) => {
-      console.log("ERROR: ", error);
-    });
-};
+      return response.data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    throw error
+  }
+  }
