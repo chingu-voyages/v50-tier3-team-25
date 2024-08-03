@@ -9,8 +9,40 @@ import { AuthContext } from "../src/authContext";
 import { getUser } from "./api";
 
 const NavBar = () => {
+    // called before any function uses it
+    const { auth } = useContext(AuthContext)
+
     const [view, setView] = useState(false)
     const [loginView, setLoginView] = useState(false)
+    const [credits, setCredits] = useState(0)
+
+    //login form stuff because React is Fucking Stupid
+    const [userName, setUserName] = useState("");
+    const [passWord, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    
+
+
+    const form = {
+        userName, setUserName,
+        passWord, setPassword,
+        message, setMessage,
+    }
+
+    function updateCredits() {
+        getUser({ auth, setInformation: setCredits})
+    }
+
+    useEffect(() => {
+        if (auth.username) {
+          getUser({ auth, setInformation: setCredits });
+        }
+      }, [view, auth.username]);
+    
+
+    useEffect(() => {
+        updateCredits()
+    }, [view])
 
     //login form stuff because React is Fucking Stupid
     const [userName, setUserName] = useState("");
@@ -52,6 +84,14 @@ const NavBar = () => {
         )
     }
 
+    // logout function
+    const handleLogout = () => {
+        auth.setUsername(null);
+        localStorage.removeItem('username');
+        setView(false)
+        setLoginView(false)
+      };
+
     return (
         <>
             {profile}
@@ -74,6 +114,11 @@ const NavBar = () => {
                                     }
                                 }}>Profile</Nav.Link>
                         </Nav>
+                            <Nav.Link>    
+                                <Button className="button is-light" onClick={handleLogout}>
+                                Logout
+                                </Button>
+                        </Nav.Link>
                         
                     </Navbar.Collapse>
                 </Container>
