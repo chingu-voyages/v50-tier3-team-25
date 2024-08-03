@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SignUp from "./SignUp";
 
-const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [passWord, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+import { AuthContext } from "./authContext";
+import { saveUsername } from "./api";
+
+const Login = ({ auth, form, setView, setLoginView }) => {
+  const userName = form.userName
+  const setUserName = form.setUserName
+  const passWord = form.passWord
+  const setPassword = form.setPassword
+  const message = form.message
+  const setMessage = form.setMessage
 
   const dbPassword = import.meta.env.VITE_SECRET_KEY;
   const baseURL = import.meta.env.VITE_BASEURL;
@@ -38,6 +44,9 @@ const Login = () => {
 
       if (response.ok) {
         setMessage("Login Successful");
+        saveUsername({auth, username: userName})
+        setLoginView(false)
+        setView(true)
       } else if (response.status === 401) {
         setMessage("Unauthorized");
       } else {
