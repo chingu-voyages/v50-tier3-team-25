@@ -2,21 +2,19 @@ import React, { useState, useEffect, useContext } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import Profile from "./Profile";
 import Login from "./Login";
-import "./css/navbar.css"
+import "./css/navbar.css";
 
 import { AuthContext } from "../src/authContext";
 
 import { getUser } from "./api";
 
 const NavBar = () => {
-  // called before any function uses it
   const { auth } = useContext(AuthContext);
 
   const [view, setView] = useState(false);
   const [loginView, setLoginView] = useState(false);
   const [credits, setCredits] = useState(0);
 
-  // login form stuff because React is Fucking Stupid
   const [userName, setUserName] = useState("");
   const [passWord, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -47,7 +45,6 @@ const NavBar = () => {
     }
   }, [view, auth]);
 
-  // logout function
   const handleLogout = () => {
     auth.setUsername(null);
     localStorage.removeItem("username");
@@ -60,9 +57,8 @@ const NavBar = () => {
   };
 
   return (
-    // moved so the login and profile are rendered as JSX
     <>
-      {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} se />}
+      {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} />}
       {loginView && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -70,25 +66,37 @@ const NavBar = () => {
             <Button
               onClick={() => {
                 setLoginView(false);
-              }}>
-              OK
+              }}
+              className="btn-secondary">
+              Close
             </Button>
           </div>
         </div>
       )}
-      <Navbar expand="lg" className="navbar navMain">
+      <Navbar expand="lg" className="navbar-custom">
         <Container>
-          <Navbar.Brand href="/" className="textColor">Nom Nom Nexus</Navbar.Brand>
+          <Navbar.Brand href="/" className="navbar-brand">
+            Nom Nom Nexus
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto">
-              <Nav.Link href="/" className="navLink">Home</Nav.Link>
-              <Nav.Link href="/menu" className="navLink">Menu</Nav.Link>
-              <Nav.Link href="/locations" className="navLink">Locations</Nav.Link>
-              <Nav.Link href="/about" className="navLink">About</Nav.Link>
+              <Nav.Link href="/" className="nav-link">
+                Home
+              </Nav.Link>
+              <Nav.Link href="/menu" className="nav-link">
+                Menu
+              </Nav.Link>
+              <Nav.Link href="/locations" className="nav-link">
+                Locations
+              </Nav.Link>
+              <Nav.Link href="/about" className="nav-link">
+                About
+              </Nav.Link>
             </Nav>
             {loggedIn && (
-              <Nav.Link className="profile-link"
+              <Nav.Link
+                className="nav-link profile-link"
                 href="#"
                 onClick={() => {
                   setView(true);
@@ -96,16 +104,13 @@ const NavBar = () => {
                 Profile
               </Nav.Link>
             )}
-            {loggedIn && (
-              <Nav.Link>
-                <Button className="button is-light" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </Nav.Link>
-            )}
-            {!loggedIn && (
+            {loggedIn ? (
+              <Button className="btn-secondary" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
               <Button
-                className="button is-light"
+                className="btn-primary"
                 onClick={() => {
                   setLoginView(true);
                 }}>

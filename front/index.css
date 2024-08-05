@@ -11,9 +11,18 @@ body {
   background-color: white;
 }
 
-h1 { color: var(--gunmetal); }
-h2, h3 { color: var(--dark-slate-gray); }
-h4, h5, h6 { color: var(--air-force-blue); }
+h1 {
+  color: var(--gunmetal);
+}
+h2,
+h3 {
+  color: var(--dark-slate-gray);
+}
+h4,
+h5,
+h6 {
+  color: var(--air-force-blue);
+}
 
 a {
   color: var(--air-force-blue);
@@ -42,11 +51,15 @@ a:visited {
   color: var(--dark-slate-gray);
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   border-color: var(--air-force-blue);
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline-color: var(--light-sea-green);
 }
 
