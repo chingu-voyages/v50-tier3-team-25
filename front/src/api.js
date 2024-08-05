@@ -47,38 +47,63 @@ export const getUser = async ({ auth, setInformation }) => {
   }
 };
 
-export const addCredits = ({ auth, creditsToAdd, setInformation }) => {
-  axios({
-    method: "put",
-    url: `${baseUrl}/addCredits`,
-    body: {
+export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
+  try {
+    const response = await axios.put(`${baseUrl}/addCredits`, {
       username: auth.username,
       credits: creditsToAdd,
       mongodbPassword: secretKey,
-    },
-  })
-    .then((response) => {
-      console.log("RESPONSE: ", response);
-    })
-    .catch((error) => {
-      console.log("ERROR: ", error);
     });
+    console.log("RESPONSE: ", response);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    throw error;
+  }
 };
 
-export const useCredits = ({ auth, creditsUsed, setInformation }) => {
-  axios({
-    method: "put",
-    url: `${baseUrl}/useCredits`,
-    body: {
+export const useCredits = async ({ auth, creditsUsed, setInformation }) => {
+  try {
+    const response = await axios.put(`${baseUrl}/useCredits`, {
       username: auth.username,
       credits: creditsUsed,
       mongodbPassword: secretKey,
-    },
-  })
-    .then((response) => {
-      console.log("RESPONSE: ", response);
-    })
-    .catch((error) => {
-      console.log("ERROR: ", error);
     });
+    console.log("RESPONSE: ", response);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    throw error;
+  }
+};
+
+export const createPaymentIntent = async (amount) => {
+  const stripeSecretKey = import.meta.env.VITE_STRIPE_SECRET_KEY;
+
+  try {
+    const response = await fetch('https://api.stripe.com/v1/payment_intents', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${stripeSecretKey}`,
+      },
+      body: new URLSearchParams({
+        amount: amount.toString(),
+        currency: 'usd',
+        'payment_method_types[]': 'card',
+      }),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      console.error('Error creating payment intent:', errorResponse);
+      throw new Error('Failed to create payment intent');
+    }
+
+    const paymentIntent = await response.json();
+    return paymentIntent.client_secret;
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    throw error;
+  }
 };
