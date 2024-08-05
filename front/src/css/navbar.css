@@ -1,0 +1,18 @@
+.navMain {
+    background-color: var(--air-force-blue);
+    color: var(--gunmetal);
+}
+
+.textColor {
+    color: var(--gunmetal);
+}
+
+.navLink {
+    color: var(--gunmetal);
+    font-size: medium;
+    font-weight: bold;
+}
+
+.profile-link {
+    margin-right: 10px;
+}

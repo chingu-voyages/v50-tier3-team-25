@@ -1,7 +1,4 @@
 import { Link } from "react-router-dom"
-import NavBar from "./NavBar"
-import Footer from "./Footer"
-import Header from "./Header"
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
