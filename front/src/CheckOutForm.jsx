@@ -12,14 +12,12 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
     if (!stripe || !elements) {
       return
     }
-
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/checkout'
+        return_url: 'http://localhost:8080/payment-completion'
       }
     })
-
     if (error) {
       console.log(error.message)
     } else {
@@ -27,15 +25,13 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
       onPaymentSuccess()
     }
   }
-
   return (
     <Form onSubmit={handleSubmit}>
       <PaymentElement />
-      <Button className='mb-3' variant='primary' type='submit' disabled={!stripe}>
+      <Button className='mb-4 mt-4' variant='primary' type='submit' disabled={!stripe}>
         Pay
       </Button>
     </Form>
   )
 }
-
 export default CheckoutForm

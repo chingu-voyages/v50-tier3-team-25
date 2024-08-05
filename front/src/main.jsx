@@ -24,6 +24,7 @@ import SignUp from './SignUp'
 import MapLocations from './MapLocations'
 import OrderSummary from './OrderSummary'
 import Checkout from './Checkout'
+import PaymentCompletion from './PaymentCompletion'
 
 const site = import.meta.env.BASE_URL
 
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: '/checkout',
         element: <Checkout />,
+      },
+      {
+        path: '/payment-completion',
+        element: <PaymentCompletion />,
       },
     ],
   }
