@@ -40,7 +40,13 @@ export const getUser = async ({ auth, setInformation }) => {
     });
 
     if (response.ok) {
-      console.log(response);
+      const data = await response.json();
+      
+      setInformation(data);
+      
+      return data;
+    } else {
+      console.error(response.status);
     }
   } catch (error) {
     console.error("Error:", error);
