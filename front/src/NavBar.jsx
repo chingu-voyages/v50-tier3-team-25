@@ -31,8 +31,7 @@ const NavBar = () => {
   };
 
   async function updateCredits() {
-    const user = await getUser({ auth, setInformation: setCredits });
-    setCredits(user.message.credits);
+    getUser({ auth, setInformation: setCredits });
   }
 
   useEffect(() => {
