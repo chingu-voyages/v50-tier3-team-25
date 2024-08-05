@@ -1,5 +1,4 @@
 
-
 export function addToCart(id, name, price) {
     let cart = getCart()
 
@@ -48,4 +47,18 @@ export function removeFromCart(id) {
     localStorage.setItem("cart", JSON.stringify(newCart))
 
     return newCart
+}
+
+export function randomListItem(list) {
+
+    if (!list) {
+        return undefined
+    }
+
+    let int = Math.floor(Math.random() * list.length);
+    let item = list[int]
+
+    list.splice(int, 1) //remove from the array so it's not repeated
+
+    return item
 }
