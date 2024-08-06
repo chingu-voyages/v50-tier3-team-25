@@ -89,9 +89,6 @@ const NavBar = () => {
               <Nav.Link href="/locations" className="nav-link">
                 Locations
               </Nav.Link>
-              <Nav.Link href="/about" className="nav-link">
-                About
-              </Nav.Link>
             </Nav>
             {loggedIn && (
               <Nav.Link

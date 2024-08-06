@@ -85,3 +85,32 @@
 .view-cart-button:hover {
   background-color: var(--air-force-blue);
 }
+
+
+.category-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.category-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}
+
+.category-item:hover .category-content {
+  background-color: #e9ecef;
+}
+
+.category-content h2 {
+  margin: 0;
+  text-align: center;
+}
