@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 import { v4 as uuidv4 } from "uuid";
 
 import { addToCart } from "./utility";
@@ -25,8 +26,13 @@ const MenuItem = ({itemName, id, description, image, price, rating}) => {
     // rate: 4
 
     return(
-        <Col className="col-12 col-md-6 p-1" key={uuidv4()}>
+        <Col className="col-12 p-1" key={uuidv4()}>
             <Container className="p-2 border rounded-edge">
+                <Row>
+                    <Col>
+                        <Image src={image} fluid rounded className="menu-image" />
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
                         Name: {itemName}

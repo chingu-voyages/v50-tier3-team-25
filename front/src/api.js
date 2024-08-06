@@ -41,9 +41,7 @@ export const getUser = async ({ auth, setInformation }) => {
 
     if (response.ok) {
       const data = await response.json();
-      
-      setInformation(data);
-      
+      setInformation(data.message.credits)
       return data;
     } else {
       console.error(response.status);
@@ -55,10 +53,10 @@ export const getUser = async ({ auth, setInformation }) => {
 
 export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
   try {
-    const response = await axios.put(`${baseUrl}/addCredits`, {
-      username: auth.username,
-      credits: creditsToAdd,
-      mongodbPassword: secretKey,
+      const response = await axios.put(`${baseUrl}/addCredits`, {
+        username: auth.username,
+        credits: creditsToAdd,
+        mongodbPassword: secretKey,
     });
     console.log("RESPONSE: ", response);
     return response.data;

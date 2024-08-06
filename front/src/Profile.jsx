@@ -58,7 +58,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
             <Col>{'Credits: $' + credits}</Col>
           </Row>
           <Col>
-            <InputGroup className='mb-3'>
+            <InputGroup className='mb-3 mt-3'>
               <InputGroup.Text id='basic-addon1'>$</InputGroup.Text>
               <Form.Control
                 aria-label='addCredits'
