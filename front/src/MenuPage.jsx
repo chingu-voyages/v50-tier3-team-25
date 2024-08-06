@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Link } from "react-router-dom";
 
 import MenuItem from "./MenuItem";
 import Category from "./Category";
@@ -59,9 +60,19 @@ const MenuPage = () => {
     );
   } else {
     menuElements = Object.keys(menuData).map((category) => (
-      <div key={category} className="category-item">
-        <Category categoryName={category} setCurrentCategory={setCurrentCategory} />
-      </div>
+      <Link
+        to={`/menu/${category}`}
+        key={category}
+        className="category-item"
+        onClick={(e) => {
+          e.preventDefault();
+          setCurrentCategory(category);
+        }}
+      >
+        <div className="category-content">
+          <h2>{category}</h2>
+        </div>
+      </Link>
     ));
   }
 
