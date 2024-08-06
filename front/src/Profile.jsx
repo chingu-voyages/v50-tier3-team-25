@@ -47,7 +47,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
       <div className='modal-content'>
         <Container>
           <Row>
-            <Col>
+            <Col className='text-center'>
               <h2>Profile</h2>
             </Col>
           </Row>
@@ -75,7 +75,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
             )}
           </Col>
           <Row>
-            <Col>
+            <Col className='d-flex justify-content-center'>
               <Button onClick={() => setView(false)}>OK</Button>
             </Col>
           </Row>

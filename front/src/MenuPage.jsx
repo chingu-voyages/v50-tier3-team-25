@@ -10,6 +10,7 @@ import Cart from "./Cart";
 import { getMenu } from "./api";
 import { AuthContext } from "./authContext";
 import "./css/menu.css";
+import { formatString } from "./utility";
 
 const MenuPage = () => {
   const [menuData, setMenuData] = useState({});
@@ -70,7 +71,7 @@ const MenuPage = () => {
         }}
       >
         <div className="category-content">
-          <h2>{category}</h2>
+          <h2>{formatString(category)}</h2>
         </div>
       </Link>
     ));
@@ -85,7 +86,7 @@ const MenuPage = () => {
             <h1>Our Menu</h1>
             {goBack}
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-end">
             <button onClick={() => setViewCart(true)} className="view-cart-button">
               View Cart
             </button>
