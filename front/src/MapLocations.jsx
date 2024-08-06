@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Container } from "react-bootstrap";
-import { APIProvider, Map, Marker, InfoWindow } from "@vis.gl/react-google-maps";
+import { Container } from "react-bootstrap";
 import axios from "axios";
 import { AuthContext } from "./authContext";
 import { useNavigate } from "react-router-dom";
 import "./css/locations.css"; // Import the CSS file
+import { Loader } from "@googlemaps/js-api-loader";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 const MapLocations = () => {
   const { auth } = useContext(AuthContext);
@@ -44,11 +45,14 @@ const MapLocations = () => {
     }
 
     let allLocations = [];
+    const locationSet = new Set();
     for (const categoryKey in categories) {
       const category = categories[categoryKey];
       if (Array.isArray(category)) {
         category.forEach((item, index) => {
-          if (item.latitude && item.longitude) {
+          const locationKey = `${item.latitude}-${item.longitude}`;
+          if (item.latitude && item.longitude && !locationSet.has(locationKey)) {
+            locationSet.add(locationKey);
             allLocations.push({
               id: `${categoryKey}-${item.id}-${index}`,
               lat: item.latitude,
@@ -73,40 +77,80 @@ const MapLocations = () => {
     navigate("/menu");
   };
 
+  useEffect(() => {
+    if (!googleKey) {
+      console.error("Google Maps API key is missing");
+      return;
+    }
+
+    const initializeMap = async () => {
+      const loader = new Loader({
+        apiKey: googleKey,
+        version: "weekly",
+        libraries: ["maps", "marker"],
+      });
+
+      loader.load().then(async () => {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+
+        const map = new Map(document.getElementById("map"), {
+          center,
+          zoom: 4.5,
+          mapId: mapId,
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: "",
+          disableAutoPan: true,
+        });
+
+        const markers = locations.map((location) => {
+          const pinGlyph = new PinElement({
+            glyph: location.itemName.charAt(0),
+            glyphColor: "white",
+          });
+
+          const marker = new AdvancedMarkerElement({
+            position: { lat: location.lat, lng: location.lng },
+            content: pinGlyph.element,
+            map,
+          });
+
+          marker.addListener("click", () => {
+            setSelectedLocation(location);
+            infoWindow.setContent(`
+              <div class="info-window">
+                <h6>${location.itemName}</h6>
+                <p>${location.description}</p>
+                <strong>Price:</strong> $${location.price} | <strong>Rating:</strong> ${location.rating}/5
+                <p>${location.cityState ? 'location.cityState': ''}</p>
+                <button id="menuButton" class="menu-button">Go to Menu</button>
+              </div>
+            `);
+            infoWindow.open(map, marker);
+
+            // click listener to the button after the InfoWindow is opened
+            google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+              document.getElementById("menuButton").addEventListener("click", () => handleNavigation(location));
+            });
+          });
+
+          return marker;
+        });
+
+        new MarkerClusterer({ markers, map });
+      }).catch(e => {
+        console.error('Error loading Google Maps:', e);
+      });
+    };
+
+    initializeMap();
+  }, [locations, mapId, googleKey]);
+
   return (
     <Container className="d-flex align-items-center justify-content-center flex-column">
-      <div className="map-container mb-5">
-        <APIProvider apiKey={googleKey} mapId={mapId}>
-          <h3 className="map-title display-6 d-flex align-items-center justify-content-center flex-column">
-            Locations Across the USA
-          </h3>
-          <Map defaultCenter={center} defaultZoom={4.5}>
-            {locations.map((location) => (
-              <Marker
-                key={location.id}
-                position={{ lat: location.lat, lng: location.lng }}
-                onClick={() => setSelectedLocation(location)}
-              />
-            ))}
-            {selectedLocation && (
-              <InfoWindow
-                position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
-                onCloseClick={() => setSelectedLocation(null)}>
-                <div className="info-window">
-                  <h6>Name: {auth.selectedLocation.itemName}</h6>
-                  <p>Rating: {selectedLocation.rating}/5</p>
-                  <p>Description: {selectedLocation.description}</p>
-                  <p>Price: ${selectedLocation.price}</p>
-                  <p>{selectedLocation.cityState}</p>
-                  <Button className="menu-button" onClick={() => handleNavigation(selectedLocation)}>
-                    Go to Menu
-                  </Button>
-                </div>
-              </InfoWindow>
-            )}
-          </Map>
-        </APIProvider>
-      </div>
+      <div id="map" className="map-container mb-5" style={{ width: "100%", height: "600px" }} />
     </Container>
   );
 };

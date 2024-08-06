@@ -22,6 +22,7 @@ const Checkout = ({ credits }) => {
     const cartData = getCart();
     setCart(cartData);
 
+    if (Object.keys(cartData).length > 0) {
     const calculatedSubtotal = Object.keys(cartData).reduce((acc, id) => {
       const item = cartData[id];
       return acc + item.price * item.quantity;
@@ -46,6 +47,7 @@ const Checkout = ({ credits }) => {
     };
 
     fetchClientSecret();
+    }
   }, []);
 
   const appearance = {
@@ -55,6 +57,11 @@ const Checkout = ({ credits }) => {
   const options = {
     clientSecret,
     appearance,
+  };
+
+  const handlePaymentSuccess = () => {
+    clearCart();
+    setCart([]);
   };
 
   return (
@@ -68,25 +75,55 @@ const Checkout = ({ credits }) => {
         <Col>
           <h6>Billing information</h6>
           <Form>
-            <Form.Group controlId="formBasicName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Name" name="name" />
+          <Form.Group controlId="formBasicName">
+              <Form.Label htmlFor="name">Name</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Enter Name" 
+                id="name" 
+                name="name" 
+                autoComplete="name"
+              />
             </Form.Group>
             <Form.Group controlId="formBasicAddress">
-              <Form.Label>Address</Form.Label>
-              <Form.Control type="text" placeholder="Address" name="address" />
+              <Form.Label htmlFor="address">Address</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Address" 
+                id="address" 
+                name="address" 
+                autoComplete="address-line1"
+              />
             </Form.Group>
             <Form.Group controlId="formBasicCity">
-              <Form.Label>City</Form.Label>
-              <Form.Control type="text" placeholder="City" name="city" />
+              <Form.Label htmlFor="city">City</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="City" 
+                id="city" 
+                name="city" 
+                autoComplete="address-level2"
+              />
             </Form.Group>
             <Form.Group controlId="formBasicState">
-              <Form.Label>State</Form.Label>
-              <Form.Control type="text" placeholder="State" name="state" />
+              <Form.Label htmlFor="state">State</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="State" 
+                id="state" 
+                name="state" 
+                autoComplete="address-level1"
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicZipcode">
-              <Form.Label>Zip Code</Form.Label>
-              <Form.Control type="text" placeholder="Zip Code" name="zipCode" />
+              <Form.Label htmlFor="zipCode">Zip Code</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Zip Code" 
+                id="zipCode" 
+                name="zipCode" 
+                autoComplete="postal-code"
+              />
             </Form.Group>
           </Form>
           <h6 className="mb-4 mt-4">Payments</h6>
@@ -94,7 +131,7 @@ const Checkout = ({ credits }) => {
             <Col>
               {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                  <CheckoutForm clientSecret={clientSecret} />
+                  <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess}/>
                 </Elements>
               )}
             </Col>
@@ -107,7 +144,7 @@ const Checkout = ({ credits }) => {
               {Object.keys(cart).map((id) => {
                 const item = cart[id];
                 return (
-                  <div key={id} style={{ listStyle: 'none' }} className="list-unstyled">
+                  <div key={`${id}-${item.name}`} style={{ listStyle: 'none' }} className="list-unstyled">
                     <li className="list-unstyled pr-5" />
                     <span>{item.name}</span>
                     <span> - x{item.quantity} - </span>
