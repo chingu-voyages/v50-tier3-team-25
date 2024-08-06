@@ -92,22 +92,26 @@ function Featured(props) {
     <Container className="py-4">
       <h2 className="mb-4">Featured Dishes</h2>
       <Row>
-        {MenuItem({
-          itemName: item1.name,
-          id: item1.id,
-          description: item1.dsc,
-          image: item1.img,
-          price: item1.price,
-          rating: item1.rate,
-        })}
-        {MenuItem({
-          itemName: item2.name,
-          id: item2.id,
-          description: item2.dsc,
-          image: item2.img,
-          price: item2.price,
-          rating: item2.rate,
-        })}
+        <Col>
+          {MenuItem({
+            itemName: item1.name,
+            id: item1.id,
+            description: item1.dsc,
+            image: item1.img,
+            price: item1.price,
+            rating: item1.rate,
+          })}
+        </Col>
+        <Col>
+          {MenuItem({
+            itemName: item2.name,
+            id: item2.id,
+            description: item2.dsc,
+            image: item2.img,
+            price: item2.price,
+            rating: item2.rate,
+          })}
+        </Col>
       </Row>
     </Container>
   )
@@ -140,22 +144,26 @@ function PopularDishes(props) {
     <Container className="py-4">
       <h2 className="mb-4">Popular Dishes</h2>
       <Row>
-        {MenuItem({
-          itemName: item1.name,
-          id: item1.id,
-          description: item1.dsc,
-          image: item1.img,
-          price: item1.price,
-          rating: item1.rate,
-        })}
-        {MenuItem({
-          itemName: item2.name,
-          id: item2.id,
-          description: item2.dsc,
-          image: item2.img,
-          price: item2.price,
-          rating: item2.rate,
-        })}
+        <Col>
+          {MenuItem({
+            itemName: item1.name,
+            id: item1.id,
+            description: item1.dsc,
+            image: item1.img,
+            price: item1.price,
+            rating: item1.rate,
+          })}
+        </Col>
+        <Col>
+          {MenuItem({
+            itemName: item2.name,
+            id: item2.id,
+            description: item2.dsc,
+            image: item2.img,
+            price: item2.price,
+            rating: item2.rate,
+          })}
+        </Col>
       </Row>
     </Container>
   )
