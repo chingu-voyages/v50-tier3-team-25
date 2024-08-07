@@ -41,6 +41,7 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
       setErrorMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       onPaymentSuccess();
+      // clear cart
       clearCart('');
     }
 
