@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Col, Row, Card, Form } from 'react-bootstrap';
 import { getCart } from './utility';
 import { Link } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckOutForm';
-import { createPaymentIntent } from './api';
+import { createPaymentIntent, useCredits } from './api';
 
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = loadStripe(stripeKey);
 
-const Checkout = ({ credits }) => {
-  const [useCreditsState, setUseCreditsState] = useState('');
+const Checkout = ({auth, setView, updateCredits, credits }) => {
+  const [useCreditsState, setUseCreditsState] = useState(false);
   const [cart, setCart] = useState([]);
   const [clientSecret, setClientSecret] = useState('');
   const [subtotal, setSubtotal] = useState(0);
   const [taxes, setTaxes] = useState(0);
   const [total, setTotal] = useState(0);
+  const [adjustedTotal, setAdjustedTotal] = useState(0);
+
 
   useEffect(() => {
     const cartData = getCart();
@@ -31,15 +33,19 @@ const Checkout = ({ credits }) => {
     const taxRate = 0.08;
     const calculatedTaxes = calculatedSubtotal * taxRate;
     const calculatedTotal = calculatedSubtotal + calculatedTaxes;
-    const totalAmount = Math.round(calculatedTotal * 100);
+
+    const totalAmount = useCreditsState ? calculatedTotal - credits : calculatedTotal
+
+    const totalInCents = Math.round(calculatedTotal * 100);
 
     setSubtotal(calculatedSubtotal);
     setTaxes(calculatedTaxes);
     setTotal(calculatedTotal);
+    setAdjustedTotal(totalAmount)
 
     const fetchClientSecret = async () => {
       try {
-        const secret = await createPaymentIntent(totalAmount);
+        const secret = await createPaymentIntent(totalInCents);
         setClientSecret(secret);
       } catch (error) {
         console.error('Error fetching client secret:', error);
@@ -48,7 +54,7 @@ const Checkout = ({ credits }) => {
 
     fetchClientSecret();
     }
-  }, []);
+  }, [useCreditsState, credits]);
 
   const appearance = {
     theme: 'stripe',
@@ -59,10 +65,21 @@ const Checkout = ({ credits }) => {
     appearance,
   };
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     clearCart();
     setCart([]);
+    if (useCreditsState) {
+      try {
+        await useCredits({ auth, creditsUsed: Math.min(credits, total), setInformation: updateCredits });
+      } catch (error) {
+        console.error('Error using credits:', error);
+      }
+    }
   };
+
+  console.log(useCredits({auth}))
+
+
 
   return (
     <Container>
@@ -75,7 +92,7 @@ const Checkout = ({ credits }) => {
         <Col>
           <h6>Billing information</h6>
           <Form>
-          <Form.Group controlId="formBasicName">
+          <Form.Group>
               <Form.Label htmlFor="name">Name</Form.Label>
               <Form.Control 
                 type="text" 
@@ -85,7 +102,7 @@ const Checkout = ({ credits }) => {
                 autoComplete="name"
               />
             </Form.Group>
-            <Form.Group controlId="formBasicAddress">
+            <Form.Group>
               <Form.Label htmlFor="address">Address</Form.Label>
               <Form.Control 
                 type="text" 
@@ -95,7 +112,7 @@ const Checkout = ({ credits }) => {
                 autoComplete="address-line1"
               />
             </Form.Group>
-            <Form.Group controlId="formBasicCity">
+            <Form.Group>
               <Form.Label htmlFor="city">City</Form.Label>
               <Form.Control 
                 type="text" 
@@ -105,7 +122,7 @@ const Checkout = ({ credits }) => {
                 autoComplete="address-level2"
               />
             </Form.Group>
-            <Form.Group controlId="formBasicState">
+            <Form.Group>
               <Form.Label htmlFor="state">State</Form.Label>
               <Form.Control 
                 type="text" 
@@ -115,7 +132,7 @@ const Checkout = ({ credits }) => {
                 autoComplete="address-level1"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicZipcode">
+            <Form.Group className="mb-3">
               <Form.Label htmlFor="zipCode">Zip Code</Form.Label>
               <Form.Control 
                 type="text" 
@@ -125,12 +142,20 @@ const Checkout = ({ credits }) => {
                 autoComplete="postal-code"
               />
             </Form.Group>
+            <Form.Group>
+              <Form.Check
+                type='checkbox'
+                label= {"Use credits" + credits}
+                checked={useCreditsState}
+                onChange={(e) => setUseCreditsState(e.target.checked)}
+              />
+            </Form.Group>
           </Form>
           <h6 className="mb-4 mt-4">Payments</h6>
           <Row>
             <Col>
               {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
+                <Elements key={clientSecret} options={options} stripe={stripePromise}>
                   <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess}/>
                 </Elements>
               )}
@@ -154,7 +179,7 @@ const Checkout = ({ credits }) => {
               })}
               <hr />
               <p>Subtotal: ${subtotal.toFixed(2)} </p>
-              <p>{'Credit: $' + credits}</p>
+              <p>{'Credits Used: $' + (useCreditsState ? Math.min(credits, total).toFixed(2) : '0.00')}</p>
               <p>Taxes: ${taxes.toFixed(2)} </p>
               <p>Total: ${total.toFixed(2)} </p>
             </Card.Body>

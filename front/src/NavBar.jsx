@@ -57,7 +57,7 @@ const NavBar = () => {
 
   return (
     <>
-      {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} />}
+      {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} setInformation={setCredits} />}
       {loginView && (
         <div className="modal-overlay">
           <div className="modal-content">
