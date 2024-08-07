@@ -35,7 +35,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
   const handleAddCredits = async (e) => {
     e.preventDefault()
     try {
-      await addCredits({ auth, creditsToAdd, setInformation })
+      await addCredits({auth, creditsToAdd, setInformation})
       updateCredits()
     } catch (error) {
       console.error('Failed to add credits:', error)
@@ -69,7 +69,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
               />
             </InputGroup>
             {clientSecret && (
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handleAddCredits} />
               </Elements>
             )}
