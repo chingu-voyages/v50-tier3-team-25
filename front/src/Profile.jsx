@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -8,11 +8,13 @@ import { addCredits, createPaymentIntent } from './api'
 import { Elements } from '@stripe/react-stripe-js'
 import CheckoutForm from './CheckOutForm'
 import { loadStripe } from '@stripe/stripe-js'
+import { AuthContext } from './authContext'
 
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
 const stripePromise = loadStripe(stripeKey)
 
-const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
+const Profile = ({setView}) => {
+  const {auth} = useContext(AuthContext)
   const [creditsToAdd, setCreditsToAdd] = useState('')
   const [clientSecret, setClientSecret] = useState('')
 
@@ -35,12 +37,24 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
   const handleAddCredits = async (e) => {
     e.preventDefault()
     try {
-      await addCredits({auth, creditsToAdd, setInformation})
-      updateCredits()
+      await addCredits({auth, creditsToAdd, setInformation: auth.updateCredits})
+      auth.updateCredits()
     } catch (error) {
       console.error('Failed to add credits:', error)
     }
   }
+
+  const handlePaymentSuccess = async () => {
+    try {
+      await auth.updateCredits();
+      setCreditsToAdd('')
+      setClientSecret('')
+    } catch (error) {
+      console.error('Failed to add credits:', error)
+    }
+  }
+
+  
 
   return (
     <div className='modal-overlay'>
@@ -55,7 +69,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
             <Col>{'Username: ' + auth.username}</Col>
           </Row>
           <Row>
-            <Col>{'Credits: $' + credits}</Col>
+            <Col>{'Credits: $' + auth.credits}</Col>
           </Row>
           <Col>
             <InputGroup className='mb-3 mt-3'>
@@ -70,7 +84,7 @@ const Profile = ({ auth, credits, setView, updateCredits, setInformation }) => {
             </InputGroup>
             {clientSecret && (
               <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handleAddCredits} />
+                <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess} />
               </Elements>
             )}
           </Col>
