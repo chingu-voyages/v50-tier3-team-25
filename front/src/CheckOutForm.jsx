@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import.meta.env.VITE_PAYMENT_COMPLETION_URL 
+import { clearCart } from './utility';
 
 const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
   const stripe = useStripe();
@@ -11,8 +12,8 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const urL = import.meta.env.VITE_PAYMENT_COMPLETION_URL 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setErrorMessage('');
 
@@ -21,17 +22,26 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
+    const paymentElement = elements.getElement(PaymentElement);
+    if (!paymentElement) {
+      setErrorMessage('Payment element is not mounted.');
+      setLoading(false);
+      return;
+    }
+
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: urL,
       },
+      redirect: 'if_required',
     });
 
     if (error) {
       setErrorMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       onPaymentSuccess();
+      clearCart('');
     }
 
     setLoading(false);
