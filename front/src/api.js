@@ -55,7 +55,7 @@ export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
   try {
       const response = await axios.put(`${baseUrl}/addCredits`, {
         username: auth.username,
-        credits: creditsToAdd,
+        credits: creditsToAdd /100,
         mongodbPassword: secretKey,
     });
     console.log("RESPONSE: ", response);

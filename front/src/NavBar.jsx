@@ -6,14 +6,11 @@ import "./css/navbar.css";
 
 import { AuthContext } from "../src/authContext";
 
-import { getUser } from "./api";
-
 const NavBar = () => {
   const { auth } = useContext(AuthContext);
 
   const [view, setView] = useState(false);
   const [loginView, setLoginView] = useState(false);
-  const [credits, setCredits] = useState(0);
 
   const [userName, setUserName] = useState("");
   const [passWord, setPassword] = useState("");
@@ -30,19 +27,14 @@ const NavBar = () => {
     setMessage,
   };
 
-  async function updateCredits() {
-    getUser({ auth, setInformation: setCredits });
-  }
 
   useEffect(() => {
-    updateCredits();
-
     if (auth.username) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }
-  }, [view, auth]);
+  }, [view, auth.username]);
 
   const handleLogout = () => {
     auth.setUsername(null);
@@ -57,11 +49,11 @@ const NavBar = () => {
 
   return (
     <>
-      {view && <Profile auth={auth} credits={credits} setView={setView} updateCredits={updateCredits} setInformation={setCredits} />}
+      {view && <Profile setView={setView}/>}
       {loginView && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <Login auth={auth} form={form} setView={setView} setLoginView={setLoginView} />
+            <Login/>
             <Button
               onClick={() => {
                 setLoginView(false);
