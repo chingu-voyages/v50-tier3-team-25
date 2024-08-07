@@ -15,7 +15,6 @@
 
 .info-window {
   color: var(--dark-slate-gray);
-  background-color: var(--light-sky-blue);
   padding: 10px;
   border-radius: 5px;
 }

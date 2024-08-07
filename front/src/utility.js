@@ -21,6 +21,32 @@ export function addToCart(id, name, price) {
     return cart
 }
 
+export function formatString(string) {
+    if (typeof string !== "string") {
+        return ""
+    }
+
+    while (string.includes("-")) {
+        string = string.replace("-", " ")
+    }
+
+    //capitalize any characters after spaces
+    let arr = string.split(" ")
+    let idx = 0
+
+    for (let sub of arr) {
+        let char = sub.charAt(0)
+        let upper = char.toUpperCase()
+        sub = sub.replace(char, upper)
+        arr[idx] = sub
+        idx += 1
+    }
+
+    string = arr.join(" ")
+
+    return string
+}
+
 export function getCart() {
     let cart = JSON.parse(localStorage.getItem("cart"))
 
@@ -30,6 +56,11 @@ export function getCart() {
 
     return cart
 }
+
+export function clearCart() {
+    
+    localStorage.removeItem('cart');
+  };
 
 export function removeFromCart(id) {
     let cart = getCart()
@@ -62,3 +93,4 @@ export function randomListItem(list) {
 
     return item
 }
+
