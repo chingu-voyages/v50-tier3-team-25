@@ -15,12 +15,12 @@ const stripePromise = loadStripe(stripeKey);
 
 const Profile = ({ setView }) => {
   const { auth } = useContext(AuthContext);
-  const [creditsToAdd, setCreditsToAdd] = useState(0);
+  const [creditsToAdd, setCreditsToAdd] = useState('');
   const [clientSecret, setClientSecret] = useState('');
 
   // form will show only when typed into input field
   useEffect(() => {
-    if (creditsToAdd > 0) {
+    if (parseFloat(creditsToAdd) > 0) {
       const fetchClientSecret = async () => {
         try {
           const totalAmount = Math.round(parseFloat(creditsToAdd) * 100);
@@ -40,21 +40,12 @@ const Profile = ({ setView }) => {
     auth.updateCredits()
   }, [])
 
-  function attemptSetCredits(num) {
-    try {
-      if (!num) { //kills undefined, NaN
-        num = 0
-      } else {
-        num = Number(num)
-      }
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value == '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
+      setCreditsToAdd(value)
+    }
 
-      setCreditsToAdd(num)
-    }
-    catch {
-      alert("Please enter a valid number.")
-      setCreditsToAdd(0);
-      setClientSecret('');
-    }
   }
 
   const handleAddCredits = async () => {
@@ -67,7 +58,7 @@ const Profile = ({ setView }) => {
       setClientSecret('');
     } catch (error) {
       console.error('Failed to add credits:', error);
-      setCreditsToAdd(0);
+      setCreditsToAdd('');
       setClientSecret('');
     }
   };
@@ -97,7 +88,7 @@ const Profile = ({ setView }) => {
                 aria-describedby='basic-addon1'
                 value={creditsToAdd} //value can't handle anything that's not a number entered, bricks itself on "NaN"
                 placeholder='Enter Credit Amount'
-                onChange={(e) => attemptSetCredits(e.target.value)}
+                onChange={handleInputChange}
               />
             </InputGroup>
             {clientSecret && (

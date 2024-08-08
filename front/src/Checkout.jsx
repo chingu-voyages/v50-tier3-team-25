@@ -21,40 +21,38 @@ const Checkout = ({setView}) => {
   const [total, setTotal] = useState(0);
   const [adjustedTotal, setAdjustedTotal] = useState(0);
 
-
   useEffect(() => {
     const cartData = getCart();
     setCart(cartData);
 
     if (Object.keys(cartData).length > 0) {
-    const calculatedSubtotal = Object.keys(cartData).reduce((acc, id) => {
-      const item = cartData[id];
-      return acc + item.price * item.quantity;
-    }, 0);
+      const calculatedSubtotal = Object.keys(cartData).reduce((acc, id) => {
+        const item = cartData[id];
+        return acc + item.price * item.quantity;
+      }, 0);
 
-    const taxRate = 0.08;
-    const calculatedTaxes = calculatedSubtotal * taxRate;
-    const calculatedTotal = calculatedSubtotal + calculatedTaxes;
+      const taxRate = 0.08;
+      const calculatedTaxes = calculatedSubtotal * taxRate;
+      const calculatedTotal = calculatedSubtotal + calculatedTaxes;
 
-    const totalAmount = useCreditsState ? calculatedTotal - parseFloat(auth.credits)  : calculatedTotal
+      const totalAmount = useCreditsState ? calculatedTotal - parseFloat(auth.credits) : calculatedTotal;
+      const totalInCents = Math.max(Math.round(totalAmount * 100), 1);
 
-    const totalInCents = Math.max(Math.round(totalAmount * 100), 1);
+      setSubtotal(calculatedSubtotal);
+      setTaxes(calculatedTaxes);
+      setTotal(calculatedTotal);
+      setAdjustedTotal(totalAmount);
 
-    setSubtotal(calculatedSubtotal);
-    setTaxes(calculatedTaxes);
-    setTotal(calculatedTotal);
-    setAdjustedTotal(totalAmount)
+      const fetchClientSecret = async () => {
+        try {
+          const secret = await createPaymentIntent(totalInCents);
+          setClientSecret(secret);
+        } catch (error) {
+          console.error('Error fetching client secret:', error);
+        }
+      };
 
-    const fetchClientSecret = async () => {
-      try {
-        const secret = await createPaymentIntent(totalInCents);
-        setClientSecret(secret);
-      } catch (error) {
-        console.error('Error fetching client secret:', error);
-      }
-    };
-
-    fetchClientSecret();
+      fetchClientSecret();
     }
   }, [useCreditsState, auth.credits]);
 
@@ -72,24 +70,15 @@ const Checkout = ({setView}) => {
       try {
         const creditsUsed = Math.min(auth.credits, total);
         await useCredits({ auth, creditsUsed, setInformation: auth.updateCredits });
-        console.log(creditsUsed)
-        // update credits
-      auth.updateCredits()
-
+        auth.updateCredits();
       } catch (error) {
         console.error('Error using credits:', error);
       }
     }
 
-    clearCart('');
+    clearCart();
     setCart([]);
   };
-
-  useEffect(() => {
-    console.log("Credits:", (auth.credits/100).toFixed(2));
-  }, [auth.credits]);
-
-
 
   return (
     <Container>
@@ -100,9 +89,9 @@ const Checkout = ({setView}) => {
           </Col>
         </Row>
         <Col>
-          <h6>Billing information</h6>
+          <h6>Billing Information</h6>
           <Form>
-          <Form.Group>
+            <Form.Group>
               <Form.Label htmlFor="name">Name</Form.Label>
               <Form.Control 
                 type="text" 
@@ -152,22 +141,24 @@ const Checkout = ({setView}) => {
                 autoComplete="postal-code"
               />
             </Form.Group>
-            <Form.Group>
+            {auth.credits > 0 && <Form.Group>
               <Form.Check
                 type='checkbox'
-                label= {"Available credits: " + ( auth.credits/100).toFixed(2)}
+                label={"Available credits: $" + auth.credits.toFixed(2)}
                 checked={useCreditsState}
                 onChange={(e) => setUseCreditsState(e.target.checked)}
               />
-            </Form.Group>
+            </Form.Group>}
           </Form>
           <h6 className="mb-4 mt-4">Payments</h6>
           <Row>
             <Col>
-              {clientSecret && (
+              {clientSecret ? (
                 <Elements key={clientSecret} options={options} stripe={stripePromise}>
-                  <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess}/>
+                  <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess} />
                 </Elements>
+              ) : (
+                <p>Loading payment options...</p>
               )}
             </Col>
           </Row>
@@ -188,10 +179,10 @@ const Checkout = ({setView}) => {
                 );
               })}
               <hr />
-              <p>Subtotal: ${subtotal.toFixed(2)} </p>
-              <p>{'Credit: -$' + (useCreditsState ? Math.min(auth.credits/100, total).toFixed(2) : '0.00')}</p>
-              <p>Taxes: ${taxes.toFixed(2)} </p>
-              <p>Total: ${total.toFixed(2)} </p>
+              <p>Subtotal: ${subtotal.toFixed(2)}</p>
+              {auth.credits > 0 && <p>{'Credit: -$' + (useCreditsState ? Math.min(auth.credits, total).toFixed(2) : '0.00')}</p>}
+              <p>Taxes: ${taxes.toFixed(2)}</p>
+              <p>Total: ${total.toFixed(2)}</p>
             </Card.Body>
           </Card>
         </Col>
