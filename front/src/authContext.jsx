@@ -22,12 +22,9 @@ const AuthContextProvider = ({ children }) => {
   }
   }, []);
 
-  
-
-
   const updateCredits = async () => {
     try {
-      console.log("update credits for user:", username); 
+        console.log("update credits for user:", username); 
         const data = await getUser({ auth: {username}, setInformation: setCredits });
         if (data && data.message && data.message.credits !== undefined) {
           setCredits(data.message.credits)

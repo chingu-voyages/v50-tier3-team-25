@@ -36,6 +36,10 @@ const Profile = ({ setView }) => {
     }
   }, [creditsToAdd]);
 
+  useEffect(() => {
+    auth.updateCredits()
+  }, [])
+
   function attemptSetCredits(num) {
     try {
       if (!num) { //kills undefined, NaN
@@ -83,7 +87,7 @@ const Profile = ({ setView }) => {
             <Col>{'Username: ' + auth.username}</Col>
           </Row>
           <Row>
-            <Col>{'Credits: $' + ( auth.credits/100).toFixed(2)}</Col>
+            <Col>{'Credits: $' + (auth.credits).toFixed(2)}</Col>
           </Row>
           <Col>
             <InputGroup className='mb-3 mt-3'>

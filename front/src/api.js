@@ -15,7 +15,6 @@ export const getMenu = ({ setMenu }) => {
   })
     .then((response) => {
       setMenu(response.data);
-      console.log(response.data);
     })
     .catch((error) => {
       console.log("ERROR: ", error);
