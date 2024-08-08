@@ -15,7 +15,7 @@ const stripePromise = loadStripe(stripeKey);
 
 const Profile = ({ setView }) => {
   const { auth } = useContext(AuthContext);
-  const [creditsToAdd, setCreditsToAdd] = useState('');
+  const [creditsToAdd, setCreditsToAdd] = useState(0);
   const [clientSecret, setClientSecret] = useState('');
 
   // form will show only when typed into input field
@@ -36,16 +36,35 @@ const Profile = ({ setView }) => {
     }
   }, [creditsToAdd]);
 
+  function attemptSetCredits(num) {
+    try {
+      if (!num) { //kills undefined, NaN
+        num = 0
+      } else {
+        num = Number(num)
+      }
+
+      setCreditsToAdd(num)
+    }
+    catch {
+      alert("Please enter a valid number.")
+      setCreditsToAdd(0);
+      setClientSecret('');
+    }
+  }
+
   const handleAddCredits = async () => {
     try {
       console.log('Adding credits:', creditsToAdd); // Log credits to add
       await addCredits({ auth, creditsToAdd, setInformation: auth.updateCredits });
       console.log('credits added '); 
       auth.updateCredits();
-      setCreditsToAdd('');
+      setCreditsToAdd(0);
       setClientSecret('');
     } catch (error) {
       console.error('Failed to add credits:', error);
+      setCreditsToAdd(0);
+      setClientSecret('');
     }
   };
 
@@ -72,9 +91,9 @@ const Profile = ({ setView }) => {
               <Form.Control
                 aria-label='addCredits'
                 aria-describedby='basic-addon1'
-                value={creditsToAdd}
+                value={creditsToAdd} //value can't handle anything that's not a number entered, bricks itself on "NaN"
                 placeholder='Enter Credit Amount'
-                onChange={(e) => setCreditsToAdd(e.target.value)}
+                onChange={(e) => attemptSetCredits(e.target.value)}
               />
             </InputGroup>
             {clientSecret && (

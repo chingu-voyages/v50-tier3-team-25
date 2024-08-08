@@ -52,13 +52,17 @@ export const getUser = async ({ auth, setInformation }) => {
 };
 
 export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
-
-  
   try {
-      const response = await axios.put(`${baseUrl}/addCredits`, {
-        username: auth.username,
-        credits: parseFloat(creditsToAdd),
-        mongodbPassword: secretKey,
+    creditsToAdd = parseFloat(creditsToAdd)
+
+    if (creditsToAdd === NaN) {
+      creditsToAdd = 0
+    }
+    
+    const response = await axios.put(`${baseUrl}/addCredits`, {
+      username: auth.username,
+      credits: creditsToAdd,
+      mongodbPassword: secretKey,
     });
     console.log("RESPONSE: ", response);
     return response.data;
