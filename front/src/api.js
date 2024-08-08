@@ -52,10 +52,12 @@ export const getUser = async ({ auth, setInformation }) => {
 };
 
 export const addCredits = async ({ auth, creditsToAdd, setInformation }) => {
+
+  
   try {
       const response = await axios.put(`${baseUrl}/addCredits`, {
         username: auth.username,
-        credits: creditsToAdd /100,
+        credits: parseFloat(creditsToAdd),
         mongodbPassword: secretKey,
     });
     console.log("RESPONSE: ", response);
@@ -70,7 +72,7 @@ export const useCredits = async ({ auth, creditsUsed, setInformation }) => {
   try {
     const response = await axios.put(`${baseUrl}/useCredits`, {
       username: auth.username,
-      credits: creditsUsed,
+      credits: parseFloat(creditsUsed),
       mongodbPassword: secretKey,
     });
     console.log("RESPONSE: ", response);
@@ -84,6 +86,10 @@ export const useCredits = async ({ auth, creditsUsed, setInformation }) => {
 export const createPaymentIntent = async (amount) => {
   const stripeSecretKey = import.meta.env.VITE_STRIPE_SECRET_KEY;
 
+  if (!Number.isInteger(amount) || amount <= 0) {
+    throw new error("Amount is less than 0")
+
+  }
   try {
     const response = await fetch('https://api.stripe.com/v1/payment_intents', {
       method: 'POST',
