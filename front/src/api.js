@@ -90,6 +90,7 @@ export const createPaymentIntent = async (amount) => {
     throw new error("Amount is less than 0")
 
   }
+
   try {
     const response = await fetch('https://api.stripe.com/v1/payment_intents', {
       method: 'POST',

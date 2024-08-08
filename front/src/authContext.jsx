@@ -14,13 +14,29 @@ const AuthContextProvider = ({ children }) => {
     if (checkUsername) {
       setUsername(checkUsername);
     }
+
+    const storedCredits = localStorage.getItem('credits');
+
+    if (storedCredits) {
+    setCredits(Number(storedCredits))
+  }
   }, []);
+
+  
 
 
   const updateCredits = async () => {
     try {
+      console.log("update credits for user:", username); 
         const data = await getUser({ auth: {username}, setInformation: setCredits });
-        setCredits(data.message.credits)
+        if (data && data.message && data.message.credits !== undefined) {
+          setCredits(data.message.credits)
+          localStorage.setItem('credits', data.message.credits)
+          console.log("updated credits: ", data.message.credits)
+        } else {
+          console.error("no credits added: ", data)
+        }
+        
     } catch (error) {
       console.error(error)
     }

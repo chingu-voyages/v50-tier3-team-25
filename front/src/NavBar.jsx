@@ -53,7 +53,7 @@ const NavBar = () => {
       {loginView && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <Login/>
+            <Login form={form} setView={setView} setLoginView={setLoginView} />
             <Button
               onClick={() => {
                 setLoginView(false);

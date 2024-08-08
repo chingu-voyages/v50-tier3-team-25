@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import.meta.env.VITE_PAYMENT_COMPLETION_URL 
-import { clearCart } from './utility';
 
 const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
+
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -41,8 +41,6 @@ const CheckoutForm = ({ clientSecret, onPaymentSuccess }) => {
       setErrorMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       onPaymentSuccess();
-      // clear cart
-      clearCart('');
     }
 
     setLoading(false);

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, Col, Row, Card, Form } from 'react-bootstrap';
-import { getCart } from './utility';
+import { getCart, clearCart } from './utility';
 import { Link } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -36,9 +36,9 @@ const Checkout = ({setView}) => {
     const calculatedTaxes = calculatedSubtotal * taxRate;
     const calculatedTotal = calculatedSubtotal + calculatedTaxes;
 
-    const totalAmount = useCreditsState ? calculatedTotal - (auth.credits / 100) : calculatedTotal
+    const totalAmount = useCreditsState ? calculatedTotal - parseFloat(auth.credits)  : calculatedTotal
 
-    const totalInCents = Math.round(calculatedTotal * 100);
+    const totalInCents = Math.max(Math.round(totalAmount * 100), 1);
 
     setSubtotal(calculatedSubtotal);
     setTaxes(calculatedTaxes);
@@ -68,16 +68,21 @@ const Checkout = ({setView}) => {
   };
 
   const handlePaymentSuccess = async () => {
-    clearCart();
-    setCart([]);
     if (useCreditsState) {
       try {
-        await useCredits({ auth, creditsUsed: Math.min(auth.credits/100 , total), setInformation: auth.updateCredits });
-        auth.updateCredits()
+        const creditsUsed = Math.min(auth.credits, total);
+        await useCredits({ auth, creditsUsed, setInformation: auth.updateCredits });
+        console.log(creditsUsed)
+        // update credits
+      auth.updateCredits()
+
       } catch (error) {
         console.error('Error using credits:', error);
       }
     }
+
+    clearCart('');
+    setCart([]);
   };
 
   useEffect(() => {
@@ -150,7 +155,7 @@ const Checkout = ({setView}) => {
             <Form.Group>
               <Form.Check
                 type='checkbox'
-                label= {"Use credits: " + ( auth.credits/100).toFixed(2)}
+                label= {"Available credits: " + ( auth.credits/100).toFixed(2)}
                 checked={useCreditsState}
                 onChange={(e) => setUseCreditsState(e.target.checked)}
               />
@@ -184,7 +189,7 @@ const Checkout = ({setView}) => {
               })}
               <hr />
               <p>Subtotal: ${subtotal.toFixed(2)} </p>
-              <p>{'Credits Used: $' + (useCreditsState ? Math.min(auth.credits/100, total).toFixed(2) : '0.00')}</p>
+              <p>{'Credit: -$' + (useCreditsState ? Math.min(auth.credits/100, total).toFixed(2) : '0.00')}</p>
               <p>Taxes: ${taxes.toFixed(2)} </p>
               <p>Total: ${total.toFixed(2)} </p>
             </Card.Body>
