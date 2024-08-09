@@ -5,6 +5,7 @@ import Login from "./Login";
 import "./css/navbar.css";
 
 import { AuthContext } from "../src/authContext";
+import { clearLocalStorage } from "./utility";
 
 const NavBar = () => {
   const { auth } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     auth.setUsername(null);
-    localStorage.removeItem("username");
+    clearLocalStorage();
     setView(false);
     setLoginView(false);
 
@@ -53,7 +54,7 @@ const NavBar = () => {
       {loginView && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <Login/>
+            <Login form={form} setView={setView} setLoginView={setLoginView} />
             <Button
               onClick={() => {
                 setLoginView(false);

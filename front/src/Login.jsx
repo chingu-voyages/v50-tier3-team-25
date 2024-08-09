@@ -7,13 +7,10 @@ import SignUp from "./SignUp";
 import { AuthContext } from "./authContext";
 import { saveUsername } from "./api";
 
-const Login = ({ auth, form, setView, setLoginView }) => {
-  const userName = form.userName
-  const setUserName = form.setUserName
-  const passWord = form.passWord
-  const setPassword = form.setPassword
-  const message = form.message
-  const setMessage = form.setMessage
+const Login = ({form, setView, setLoginView }) => {
+  const {auth} = useContext(AuthContext)
+  const { userName, setUserName, passWord, setPassword, message, setMessage } = form;
+
 
   const dbPassword = import.meta.env.VITE_SECRET_KEY;
   const baseURL = import.meta.env.VITE_BASEURL;

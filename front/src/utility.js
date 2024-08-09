@@ -60,7 +60,7 @@ export function getCart() {
 export function clearCart() {
     
     localStorage.removeItem('cart');
-  };
+};
 
 export function removeFromCart(id) {
     let cart = getCart()
@@ -94,3 +94,8 @@ export function randomListItem(list) {
     return item
 }
 
+export function clearLocalStorage() {
+    localStorage.removeItem("username")
+    localStorage.removeItem("cart")
+    localStorage.removeItem("credits")
+}
