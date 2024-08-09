@@ -38,9 +38,6 @@ jobs:
       - name: Pull image from Docker Hub
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/team-25:latest
 
-      - name: Delete old Container
-        run: docker rm -f backend-container || true
-
       - name: Run docker container
         run: sudo systemctl restart backend.service
 
