@@ -1,62 +1,115 @@
-import React, { useState } from "react";
-import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from "react";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import Profile from "./Profile";
 import Login from "./Login";
+import "./css/navbar.css";
 
-import { useContext } from "react";
 import { AuthContext } from "../src/authContext";
 
 const NavBar = () => {
-    const [view, setView] = useState(false)
-    const [loginView, setLoginView] = useState(false)
+  const { auth } = useContext(AuthContext);
 
-    const { auth } = useContext(AuthContext)
+  const [view, setView] = useState(false);
+  const [loginView, setLoginView] = useState(false);
 
-    let profile = (<></>)
-    if (view) {
-        profile = Profile({auth, setView})
+  const [userName, setUserName] = useState("");
+  const [passWord, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const form = {
+    userName,
+    setUserName,
+    passWord,
+    setPassword,
+    message,
+    setMessage,
+  };
+
+
+  useEffect(() => {
+    if (auth.username) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
     }
+  }, [view, auth.username]);
 
-    let login = (<></>)
-    if (loginView) {
-        login = (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <Login/>
-                    <Button onClick={() => {setLoginView(false)}}>OK</Button>
-                </div>
-            </div>
-        )
-    }
+  const handleLogout = () => {
+    auth.setUsername(null);
+    localStorage.removeItem("username");
+    setView(false);
+    setLoginView(false);
 
-    return (
-        <>
-            {profile}
-            {login}
-            <Navbar bg="light" expand="lg" className="navbar">
-                <Container>
-                    <Navbar.Brand href="/">Nom Nom Nexus</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mx-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/menu">Menu</Nav.Link>
-                            <Nav.Link href="/locations">Locations</Nav.Link>
-                            <Nav.Link href="/about">About</Nav.Link>
-                            <Nav.Link href="#" onClick={() => {
-                                    if (auth.username) {
-                                        setView(true)
-                                    } else {
-                                        setLoginView(true)
-                                    }
-                                }}>Profile</Nav.Link>
-                        </Nav>
-                        
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </>
-    );
-}
+    setUserName("");
+    setPassword("");
+    setMessage("");
+  };
+
+  return (
+    <>
+      {view && <Profile setView={setView}/>}
+      {loginView && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <Login/>
+            <Button
+              onClick={() => {
+                setLoginView(false);
+              }}
+              className="btn-secondary">
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
+      <Navbar expand="lg" className="navbar-custom">
+        <Container>
+          <Navbar.Brand href="/" className="navbar-brand">
+            Nom Nom Nexus
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mx-auto">
+              <Nav.Link href="/" className="nav-link">
+                Home
+              </Nav.Link>
+              <Nav.Link href="/menu" className="nav-link">
+                Menu
+              </Nav.Link>
+              <Nav.Link href="/locations" className="nav-link">
+                Locations
+              </Nav.Link>
+            </Nav>
+            {loggedIn && (
+              <Nav.Link
+                className="nav-link profile-link"
+                href="#"
+                onClick={() => {
+                  setView(true);
+                }}>
+                Profile
+              </Nav.Link>
+            )}
+            {loggedIn ? (
+              <Button className="btn-secondary" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <Button
+                className="btn-primary"
+                onClick={() => {
+                  setLoginView(true);
+                }}>
+                Log In
+              </Button>
+            )}
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </>
+  );
+};
 
 export default NavBar;

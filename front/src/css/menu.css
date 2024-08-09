@@ -1,0 +1,116 @@
+/* Add to navbar.css or your menu-specific CSS file */
+.menu-container {
+  background-color: var(--gunmetal);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--light-sea-green);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.menu-header h1 {
+  font-size: 2rem;
+  color: var(--light-sky-blue);
+}
+
+.menu-header a {
+  color: var(--light-sea-green);
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.menu-header a:hover {
+  text-decoration: underline;
+}
+
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.menu-item,
+.category-item {
+  background-color: var(--dark-slate-gray);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-item:hover,
+.category-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item img,
+.category-item img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.cart-link {
+  color: var(--light-sea-green);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.cart-link:hover {
+  text-decoration: underline;
+}
+
+.view-cart-button {
+  background-color: var(--light-sea-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-cart-button:hover {
+  background-color: var(--air-force-blue);
+}
+
+
+.category-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.category-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}
+
+.category-item:hover .category-content {
+  background-color: #e9ecef;
+}
+
+.category-content h2 {
+  margin: 0;
+  text-align: center;
+}

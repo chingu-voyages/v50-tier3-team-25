@@ -1,0 +1,42 @@
+.map-container {
+  height: 75vh;
+  width: 75%;
+  margin: 0 auto;
+  background-color: var(--gunmetal);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-title {
+  color: var(--light-sky-blue);
+  margin-bottom: 20px;
+}
+
+.info-window {
+  color: var(--dark-slate-gray);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.info-window h6 {
+  color: var(--air-force-blue);
+}
+
+.info-window p {
+  margin: 5px 0;
+}
+
+.menu-button {
+  background-color: var(--light-sea-green);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: var(--dark-slate-gray);
+}

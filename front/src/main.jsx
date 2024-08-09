@@ -11,20 +11,19 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
-import About from './About'
 import App from './App'
 import ErrorPage from './ErrorPage'
 import MenuPage from './MenuPage'
 
 import Header from './Header'
 import Footer from './Footer'
-import Login from './Login'
 
 import AuthContextProvider from '../src/authContext'
 import SignUp from './SignUp'
 import MapLocations from './MapLocations'
 import OrderSummary from './OrderSummary'
 import Checkout from './Checkout'
+import PaymentCompletion from './PaymentCompletion'
 
 const site = import.meta.env.BASE_URL
 
@@ -51,20 +50,12 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />
       },
       {
-        path: '/about',
-        element: <About />
-      },
-      {
         path: '/menu',
         element: <MenuPage />
       },
       {
         path: '/signup',
         element: <SignUp />
-      },
-      {
-        path: '/login',
-        element: <Login />
       },
       {
         path: '/locations',
@@ -78,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: '/checkout',
         element: <Checkout />,
+      },
+      {
+        path: '/payment-completion',
+        element: <PaymentCompletion />,
       },
     ],
   }

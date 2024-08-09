@@ -1,0 +1,74 @@
+.navbar-custom {
+  background-color: var(--gunmetal);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-link {
+  color: var(--light-sky-blue) !important;
+  margin: 0 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--light-sea-green) !important;
+}
+
+.btn-primary {
+  background-color: var(--light-sea-green);
+  border-color: var(--light-sea-green);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-slate-gray);
+  border-color: var(--dark-slate-gray);
+}
+
+.btn-secondary {
+  background-color: var(--air-force-blue);
+  border-color: var(--air-force-blue);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--dark-slate-gray);
+  border-color: var(--dark-slate-gray);
+}
+
+.profile-link {
+  color: var(--light-sea-green) !important;
+  font-weight: bold;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}

@@ -1,0 +1,68 @@
+:root {
+  --gunmetal: #092327ff;
+  --dark-slate-gray: #0b5351ff;
+  --light-sea-green: #00a9a5ff;
+  --air-force-blue: #4e8098ff;
+  --light-sky-blue: #90c2e7ff;
+}
+
+body {
+  color: var(--gunmetal);
+  background-color: white;
+}
+
+h1 {
+  color: var(--gunmetal);
+}
+h2,
+h3 {
+  color: var(--dark-slate-gray);
+}
+h4,
+h5,
+h6 {
+  color: var(--air-force-blue);
+}
+
+a {
+  color: var(--air-force-blue);
+}
+
+a:hover {
+  color: var(--light-sea-green);
+}
+
+a:visited {
+  color: var(--dark-slate-gray);
+}
+
+.btn-primary {
+  background-color: var(--light-sea-green);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--air-force-blue);
+  color: white;
+}
+
+.btn-disabled {
+  background-color: var(--light-sky-blue);
+  color: var(--dark-slate-gray);
+}
+
+input,
+select,
+textarea {
+  border-color: var(--air-force-blue);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline-color: var(--light-sea-green);
+}
+
+::placeholder {
+  color: var(--light-sky-blue);
+}
