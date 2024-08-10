@@ -7,7 +7,7 @@ const User = require("./models/User");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: 'https://nomnomnexus.store',
+  origin: ['https://nomnomnexus.store', 'http://localhost:8080'],
   credentials: true
 }
 
