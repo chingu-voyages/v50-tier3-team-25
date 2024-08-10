@@ -18,6 +18,9 @@ const port = 3001;
 const app = express();
 
 app.use('*', cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
