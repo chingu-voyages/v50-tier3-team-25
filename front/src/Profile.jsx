@@ -10,49 +10,58 @@ import CheckoutForm from './CheckOutForm'
 import { loadStripe } from '@stripe/stripe-js'
 import { AuthContext } from './authContext'
 
-const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-const stripePromise = loadStripe(stripeKey)
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = loadStripe(stripeKey);
 
-const Profile = ({setView}) => {
-  const {auth} = useContext(AuthContext)
-  const [creditsToAdd, setCreditsToAdd] = useState('')
-  const [clientSecret, setClientSecret] = useState('')
+const Profile = ({ setView }) => {
+  const { auth } = useContext(AuthContext);
+  const [creditsToAdd, setCreditsToAdd] = useState('');
+  const [clientSecret, setClientSecret] = useState('');
 
   // form will show only when typed into input field
   useEffect(() => {
-    if (creditsToAdd > 0) {
+    if (parseFloat(creditsToAdd) > 0) {
       const fetchClientSecret = async () => {
         try {
-          const totalAmount = Math.round(creditsToAdd * 100)
-          const clientSecret = await createPaymentIntent(totalAmount)
-          setClientSecret(clientSecret)
+          const totalAmount = Math.round(parseFloat(creditsToAdd) * 100);
+          console.log('Total Amount:', totalAmount); 
+          const clientSecret = await createPaymentIntent(totalAmount);
+          setClientSecret(clientSecret);
+          
         } catch (error) {
-          console.error('Error fetching client secret:', error)
+          console.error('Error fetching client secret:', error);
         }
-      }
-      fetchClientSecret()
+      };
+      fetchClientSecret();
     }
-  }, [creditsToAdd])
+  }, [creditsToAdd]);
 
-  const handleAddCredits = async (e) => {
-    e.preventDefault()
-    try {
-      await addCredits({auth, creditsToAdd, setInformation: auth.updateCredits})
-      auth.updateCredits()
-    } catch (error) {
-      console.error('Failed to add credits:', error)
+  useEffect(() => {
+    auth.updateCredits()
+  }, [])
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value == '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
+      setCreditsToAdd(value)
     }
+
   }
 
-  const handlePaymentSuccess = async () => {
+  const handleAddCredits = async () => {
     try {
-      await auth.updateCredits();
-      setCreditsToAdd('')
-      setClientSecret('')
+      console.log('Adding credits:', creditsToAdd); // Log credits to add
+      await addCredits({ auth, creditsToAdd, setInformation: auth.updateCredits });
+      console.log('credits added '); 
+      auth.updateCredits();
+      setCreditsToAdd(0);
+      setClientSecret('');
     } catch (error) {
-      console.error('Failed to add credits:', error)
+      console.error('Failed to add credits:', error);
+      setCreditsToAdd('');
+      setClientSecret('');
     }
-  }
+  };
 
   
 
@@ -69,7 +78,7 @@ const Profile = ({setView}) => {
             <Col>{'Username: ' + auth.username}</Col>
           </Row>
           <Row>
-            <Col>{'Credits: $' + auth.credits}</Col>
+            <Col>{'Credits: $' + (auth.credits).toFixed(2)}</Col>
           </Row>
           <Col>
             <InputGroup className='mb-3 mt-3'>
@@ -77,14 +86,14 @@ const Profile = ({setView}) => {
               <Form.Control
                 aria-label='addCredits'
                 aria-describedby='basic-addon1'
-                value={creditsToAdd}
+                value={creditsToAdd} //value can't handle anything that's not a number entered, bricks itself on "NaN"
                 placeholder='Enter Credit Amount'
-                onChange={(e) => setCreditsToAdd(e.target.value)}
+                onChange={handleInputChange}
               />
             </InputGroup>
             {clientSecret && (
               <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handlePaymentSuccess} />
+                <CheckoutForm clientSecret={clientSecret} onPaymentSuccess={handleAddCredits} />
               </Elements>
             )}
           </Col>
