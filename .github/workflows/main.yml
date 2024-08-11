@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+    paths: 
+      - 'back/**'
+      - 'front/**'
       
 jobs:
   dockerize-backend:
+    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && (contains(github.event.head_commit.modified, 'back/') || contains(github.event.head_commit.added, 'back/')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,6 +37,7 @@ jobs:
 
   deploy-backend:
     needs: dockerize-backend
+    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && (contains(github.event.head_commit.modified, 'front/') || contains(github.event.head_commit.added, 'front/')) }}
     runs-on: self-hosted
     steps:
       - name: Pull image from Docker Hub
@@ -88,4 +93,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync ./front/dist/ s3://${{ secrets.AWS_S3_BUCKET }} --region ${{ secrets.AWS_REGION }} --delete
+          aws s3 sync ./front/docs/ s3://${{ secrets.AWS_S3_BUCKET }} --region ${{ secrets.AWS_REGION }} --delete
