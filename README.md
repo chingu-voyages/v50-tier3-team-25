@@ -1,38 +1,70 @@
-# voyage-tasks
+# NomNomNexus
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+[Visit NomNomNexus](https://nomnomnexus.store)
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+## Table of Contents
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+- [Overview](#overview)
+  - [Application Overview](#application-overview)
+  - [Screenshot](#screenshot)
+  - [Video](#video)
+- [Technologies Used](#technologies-used)
+  - [Backend](#backend)
+  - [Database](#database)
+  - [Frontend](#frontend)
+  - [Containerization and Deployment](#containerization-and-deployment)
+    - [CI/CD with GitHub Actions](#cicd-with-github-actions)
+- [Our Team](#our-team)
 
-> Own it & Make it your Own!
+## Overview
 
-## Team Documents
+Welcome to **NomNomNexus**, your ultimate gateway to discovering delicious food nationwide! Whether you're hunting for local favorites or uncovering hidden gems, our interactive map helps you explore a vast network of restaurants, making it easier than ever to satisfy your cravings and embark on exciting culinary adventures.
 
-You may find these helpful as you work together to organize your project.
+### Application Overview
 
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
+NomNomNexus is more than just a restaurant finder—it's a comprehensive menu and ordering platform with robust frontend and backend functionalities. From secure user authentication to dynamic menu displays, our application ensures a seamless user experience:
 
-Meeting Agenda templates (located in the `/docs` directory in this repo):
+- **User Accounts:** Create an account, add credit for smooth transactions, and manage your profile effortlessly.
+- **Dynamic Menus:** Menus are fetched from the free-food-menus API, complete with images, prices, and restaurant details. Filter by category, or explore specific menus by clicking on map markers.
+- **Interactive Map:** Discover restaurants across the country and fetch specific menus with a click.
+- **Order Management:** Add or remove items from your order and manage payments via Stripe for secure transactions.
+- **Responsive Design:** Enjoy a smooth, intuitive experience across all devices.
 
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
+## Technologies Used
+
+### Backend
+
+Our backend is powered by a **Node.js** and **Express** API, facilitating user account creation, credit management, and secure transactions. We integrate the **free-food-menus API** to offer a selection of nearly 700 dishes across 15 categories, ensuring a diverse and enticing menu.
+
+### Database
+
+We utilize **MongoDB**, a NoSQL database known for its scalability and efficiency. It securely stores user accounts and credits, ensuring your data is always safe.
+
+### Frontend
+
+The frontend is built with **React** and **Vite**, styled with **Tailwind CSS** and **Bootstrap** for a sleek, responsive interface. **React Router DOM** powers smooth navigation, while **Stripe** handles payment processing, making transactions seamless and secure.
+
+### Containerization and Deployment
+
+Our application is containerized and deployed using a robust suite of tools to ensure reliability and efficiency:
+
+- **Dockerhub:** We containerize the Express backend for consistent environments across development and production. The Docker image is stored on Dockerhub, enabling easy pulls and seamless integration.
+- **GitHub Actions:** Our CI/CD pipeline is fully automated with GitHub Actions, ensuring seamless code integration and deployment. The workflow is smartly configured to trigger deployments only when changes are detected in the backend or frontend codebase.
+
+  - **Backend Deployment:** Upon changes, the workflow builds a new Docker image for the backend and pushes it to Dockerhub. A self-hosted runner on an EC2 instance is then notified to pull the latest image and deploy it, ensuring the backend is always up-to-date.
+  
+  - **Frontend Deployment:** For the frontend, static files are built and deployed to an AWS S3 bucket. To guarantee that users always receive the latest version, we utilize an OIDC policy to interact with AWS CloudFront, invalidating the cache so the new files are served immediately upon deployment.
+
+- **AWS Cloud Services:** We leverage Amazon AWS for cloud hosting:
+  - **AWS CloudFront:** Ensures all HTTP requests are redirected to HTTPS for secure access and efficient caching.
+  - **AWS S3 Bucket:** Hosts and serves React static files.
+  - **AWS EC2:** Hosts the Node.js backend server, exposed via **Nginx** as a reverse proxy.
+  
+- **Systemd:** Manages the lifecycle of backend services and GitHub Actions runners, ensuring the backend is always available and ready for updates.
 
 ## Our Team
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team *before* you start
-coding!
+Meet the dedicated team behind NomNomNexus! Our team is passionate about food and technology, working tirelessly to connect you with the best dining experiences across the country.
 
 - David Hyppolite: [GitHub](https://github.com/dhayv) / [LinkedIn](https://www.linkedin.com/in/david-h-60560b61/)
 - Maddie Carlson: [GitHub](https://github.com/SpookyLamb) / [LinkedIn](https://www.linkedin.com/in/madeline-carlson-dev/)

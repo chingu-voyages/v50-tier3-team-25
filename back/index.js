@@ -7,14 +7,20 @@ const User = require("./models/User");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: 'https://nomnomnexus.store',
-  credentials: true
-}
+  origin: ['https://nomnomnexus.store', 'http://localhost:8080'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+
 
 const port = 3001;
 const app = express();
 
-app.use(cors(corsOptions));
+app.use('*', cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
