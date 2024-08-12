@@ -1,11 +1,17 @@
 name: Deploy Backend and Frontend
 
 on:
-  workflow_dispatch: 
-      
+  workflow_dispatch:  # Enables manual trigger for the workflow
+  push:
+    branches:
+      - main
+    paths: 
+      - 'back/**'
+      - 'front/**'
+
 jobs:
   dockerize-backend:
-    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && (contains(github.event.head_commit.modified, 'back/') || contains(github.event.head_commit.added, 'back/')) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' && (contains(github.event.head_commit.message, 'back/') || contains(github.event.head_commit.message, 'front/')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,7 +38,7 @@ jobs:
 
   deploy-backend:
     needs: dockerize-backend
-    if: ${{ github.event_name == 'push' && github.event.head_commit.modified && (contains(github.event.head_commit.modified, 'front/') || contains(github.event.head_commit.added, 'front/')) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' && (contains(github.event.head_commit.message, 'back/') || contains(github.event.head_commit.message, 'front/')) }}
     runs-on: self-hosted
     steps:
       - name: Pull image from Docker Hub
@@ -43,6 +49,7 @@ jobs:
 
   deploy-frontend:
     needs: dockerize-backend
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' && (contains(github.event.head_commit.message, 'back/') || contains(github.event.head_commit.message, 'front/')) }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
