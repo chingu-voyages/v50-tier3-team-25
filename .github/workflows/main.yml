@@ -1,12 +1,7 @@
 name: Deploy Backend and Frontend
 
 on:
-  push:
-    branches:
-      - main
-    paths: 
-      - 'back/**'
-      - 'front/**'
+  workflow_dispatch: 
       
 jobs:
   dockerize-backend:
