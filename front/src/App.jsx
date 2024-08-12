@@ -7,6 +7,7 @@ import "./css/app.css";
 import { getMenu } from "./api";
 import { randomListItem } from "./utility";
 import MenuItem from "./MenuItem";
+import FoodHeroImage from './assets/FoodHeroImage.jpg'
 
 const Title = () => {
   return (
@@ -23,7 +24,7 @@ function HeroWithStoreFinder() {
         <Col xs={12} md={10} lg={8} className="p-0">
           <div className="hero-image-wrapper">
             <img 
-              src="./src/assets/FoodHeroImage.jpg"
+              src={FoodHeroImage}
               alt="Delicious spread of our most popular dishes"
               className="img-fluid rounded"
             />
@@ -43,7 +44,7 @@ function Hero() {
       <Row>
         <Col className="rounded">
           <img 
-            src="./src/assets/FoodHeroImage.jpg"
+            src={FoodHeroImage}
             alt="Delicious spread of our most popular dishes" 
             className="img-fluid rounded"
           />
